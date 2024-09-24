@@ -1,0 +1,29 @@
+﻿@{
+	ViewData["Title"] = "Статистика";
+}
+<div class="text-center">
+	<h2>Статистика за @ViewBag.Months</h2>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div id="myDiv" style="width:100%;max-width:400px"></div>
+
+<script>
+	let data = [
+
+		{
+			x: [250, 1200, 3990],
+			y: ['Відеоігри', 'Продукти', 'Електроніка'],
+			type: 'bar',
+			orientation: 'h',
+			marker: {
+				color: '#009933'
+			},
+		}
+	];
+
+
+	Plotly.newPlot('myDiv', data);
+
+</script>

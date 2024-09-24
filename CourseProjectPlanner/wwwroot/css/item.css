@@ -1,0 +1,30 @@
+﻿.details {
+    border: 1.5px solid grey;
+    color: #212121;
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 0px 10px #212121;
+}
+
+
+
+.card-body {
+    width: fit-content;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+.img-thumbnail {
+    border: none;
+}
+
+.card {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+    border-radius: 5px;
+    padding-bottom: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 25%;
+}
