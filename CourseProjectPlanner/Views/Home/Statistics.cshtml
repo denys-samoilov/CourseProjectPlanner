@@ -7,13 +7,20 @@
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-<div id="myDiv" style="width:100%;max-width:400px"></div>
+<div id="myDiv" class="center-element" style="width:100%; max-width:1000px;"></div>
 
 <script>
+	let categoryNames = [];
+	let categoryPrices = [];
+
+	categoryNames.push('Відеоігри', 'Продукти', 'Електроніка', 'Одяг');
+
+	categoryPrices.push(250, 1200, 3990, 600)
+
 	let data = [
 		{
-			x: [250, 1200, 3990],
-			y: ['Відеоігри', 'Продукти', 'Електроніка'],
+			x: categoryPrices,
+			y: categoryNames,
 			type: 'bar',
 			orientation: 'h',
 			marker: {
@@ -21,5 +28,12 @@
 			},
 		}
 	];
+
+
+	let height = data[0].y.length * 150;
+
+	if (height < 400) height = 400;
+
+	document.getElementById('myDiv').style.height = height + "px"; 
 	Plotly.newPlot('myDiv', data);
 </script>
