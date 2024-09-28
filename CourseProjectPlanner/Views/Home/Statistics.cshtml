@@ -7,7 +7,8 @@
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-<div id="myDiv" class="center-element" style="width:100%; max-width:1000px;"></div>
+
+<div id="barStatistics" class="center-element" style="width:100%; max-width:1000px;"></div>
 
 <script>
 	let categoryNames = [];
@@ -34,6 +35,6 @@
 
 	if (height < 400) height = 400;
 
-	document.getElementById('myDiv').style.height = height + "px"; 
-	Plotly.newPlot('myDiv', data);
+	document.getElementById('barStatistics').style.height = height + "px";
+	Plotly.newPlot('barStatistics', data);
 </script>
