@@ -1,0 +1,103 @@
+﻿@{
+	ViewData["Title"] = "Модал!";
+}
+
+<link rel="stylesheet" href="~/css/modal.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
+
+<h2>Modal Example</h2>
+
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+	<!-- Modal content -->
+	<div class="modal-content center-element">
+		<div>
+			<span class="close">&times;</span>
+			<h5 class="text-center">Деталі про витрату</h5>
+		</div>
+		<div class="d-flex">
+			<div class="card col-md-3 col-10 mt-5">
+				<img class='mx-auto img-thumbnail' id="categoryImage"
+					 src="/images/electronic-icon.png"
+					 width="100px" />
+				<div class="card-body text-center mx-auto">
+					<div class='cvp'>
+						<h5 class="card-title font-weight-bold" id="categoryName">Електроніка</h5>
+						<p class="card-text" id="priceOutput">₴3990</p>
+						<p>23/09/2024</p>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<input type="number" id="priceInput" class="form-control mt-5" />
+				<label class="form-label">Ціна</label>
+				<p></p>
+				<select id="categoryInput" class="form-control">
+					<option value="products">Продукти харчування</option>
+					<option value="electronic">Електроніка</option>
+				</select>
+				<label class="form-label">Категорія</label>
+				<p></p>
+				<textarea id="descriptionInput" class="form-control"></textarea>
+				<label class="form-label">Опис</label>
+
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+
+<script>
+	// Get the modal
+	let modal = document.getElementById("myModal");
+
+	// Get the button that opens the modal
+	let btn = document.getElementById("myBtn");
+
+	// Get the <span> element that closes the modal
+	let span = document.getElementsByClassName("close")[0];
+
+	let categoryInput = document.getElementById("categoryInput");
+	let categoryName = document.getElementById("categoryName")
+	let categoryImage = document.getElementById("categoryImage")
+
+	let priceInput = document.getElementById("priceInput");
+	let priceOutput = document.getElementById("priceOutput");
+
+
+	priceInput.value = 3990;
+
+	priceInput.oninput = function () {
+		priceOutput.textContent = `₴${priceInput.value}`;
+	};
+
+	categoryInput.onchange = function () {
+		let selectedCategory = categoryInput.value;
+
+		categoryImage.src = `/images/${selectedCategory}-icon.png`;
+		categoryName.textContent = categoryInput.options[categoryInput.selectedIndex].textContent;
+
+	};
+
+
+	// When the user clicks the button, open the modal
+	btn.onclick = function () {
+		modal.style.display = "block";
+	}
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function () {
+		modal.style.display = "none";
+		priceOutput.textContent = `₴3990`;
+		priceInput.value = 3990;
+	}
+
+
+</script>
