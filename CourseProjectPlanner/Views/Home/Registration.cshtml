@@ -1,6 +1,7 @@
 ﻿@{
 	ViewData["Title"] = "Реєстрація";
 }
+@model CourseProjectPlanner.Models.User
 
 <div class="container h-100">
 	<div class="row d-flex justify-content-center align-items-center h-100">
@@ -9,45 +10,49 @@
 				<div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
 					<p class="text-center h1">Реєстрація</p>
-
-					<form class="mx-1 mx-md-4">
-
+					<form asp-action="Registration" class="mx-1 mx-md-4">
 						<div class="d-flex flex-row align-items-center mb-4">
 							<i class="fas fa-user fa-lg me-3 fa-fw"></i>
 							<div data-mdb-input-init class="form-outline flex-fill mb-0">
-								<input type="text" id="nameInput" class="form-control" />
-								<label class="form-label" for="form3Example1c">Ім'я</label>
+								<label asp-for="Name" class="control-label">Ім'я</label>
+								<input asp-for="Name" class="form-control" />
+								<span asp-validation-for="Name" class="text-danger" style="visibility: hidden"></span>
+								<p class="text-danger" id="NameSpan"></p>
 							</div>
 						</div>
 
 						<div class="d-flex flex-row align-items-center mb-4">
 							<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
 							<div data-mdb-input-init class="form-outline flex-fill mb-0">
-								<input type="email" id="loginInput" class="form-control" />
-								<label class="form-label" for="form3Example3c">Логін</label>
+								<label asp-for="Login" class="control-label">Логін</label>
+								<input asp-for="Login" class="form-control" id="LoginInput" />
+								<span asp-validation-for="Login" class="text-danger" style="visibility: hidden"></span>
+								<p class="text-danger" id="LoginSpan"></p>
 							</div>
 						</div>
 
 						<div class="d-flex flex-row align-items-center mb-4">
 							<i class="fas fa-lock fa-lg me-3 fa-fw"></i>
 							<div data-mdb-input-init class="form-outline flex-fill mb-0">
-								<input type="password" id="passwordInput" class="form-control" />
-								<label class="form-label" for="form3Example4c">Пароль</label>
+								<label asp-for="Password" class="control-label">Пароль</label>
+								<input asp-for="Password" type="password" class="form-control" id="PasswordInput" />
+								<span asp-validation-for="Password" class="text-danger" style="visibility: hidden"></span>
+								<p class="text-danger" id="PasswordSpan"></p>
+
 							</div>
 						</div>
 
 						<div class="d-flex flex-row align-items-center mb-4">
 							<i class="fas fa-key fa-lg me-3 fa-fw"></i>
 							<div data-mdb-input-init class="form-outline flex-fill mb-0">
-								<input type="password" id="passwordRepeatInput" class="form-control" />
-								<label class="form-label" for="form3Example4cd">Підтвердіть пароль</label>
+								<label class="control-label">Повторіть пароль</label>
+								<input type="password" class="form-control" id="PasswordRepeatInput" />
+								<p class="text-danger" id="PasswordRepeatSpan"></p>
 							</div>
 						</div>
 
-
-
 						<div class="d-flex justify-content-center mx-4">
-							<button class="text-center green-button">Зареєструватись</button>
+							<button type="submit" value="Create" class="text-center green-button" id="RegistrationButton" disabled>Зареєструватись</button>
 						</div>
 
 						<p class="text-center">Вже зареєстровані? <a asp-controller="Home" asp-action="Login">Увійти</a></p>
@@ -60,3 +65,94 @@
 		</div>
 	</div>
 </div>
+
+@section Scripts {
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+<script>
+	let userLogins = @Html.Raw(Json.Serialize(ViewBag.Users));
+	let loginInput = document.getElementById("LoginInput");
+	let loginSpan = document.getElementById("LoginSpan");
+	let registrationButton = document.getElementById("RegistrationButton");
+	let passwordInput = document.getElementById("PasswordInput");
+	let passwordSpan = document.getElementById("PasswordSpan");
+	let passwordRepeatInput = document.getElementById("PasswordRepeatInput");
+	let passwordRepeatSpan = document.getElementById("PasswordRepeatSpan");
+
+
+	let loginUnique = false;
+	let passwordRepeated = false;
+	let passwordValid = false;
+
+	loginInput.oninput = function () {
+
+		for (let i = 0; i < userLogins.length; i++) {
+			if (userLogins[i] === loginInput.value.trim()) {
+				loginUnique = false;
+				break;
+			}
+			else {
+				loginUnique = true;
+			}
+		}
+
+
+		checkFormValidity();
+
+
+	};
+
+	passwordInput.oninput = function () {
+		checkPasswordMatch();
+		checkPasswordValid();
+	};
+
+	passwordRepeatInput.oninput = function () {
+		checkPasswordMatch();
+		checkPasswordValid();
+	};
+
+	function checkPasswordMatch() {
+		if (passwordInput.value.trim() === passwordRepeatInput.value.trim() && passwordInput.value.trim() !== "") {
+			passwordRepeated = true;
+		} else {
+			passwordRepeated = false;
+		}
+
+		if (!passwordRepeated) {
+			passwordRepeatSpan.innerHTML = 'Паролі не співпадають';
+		}
+		else passwordRepeatSpan.innerHTML = '';
+
+
+
+		checkFormValidity();
+	}
+
+
+
+	function checkPasswordValid() {
+		passwordValid = passwordInput.value.trim().length >= 8;
+		if (passwordValid == false) {
+			passwordSpan.innerHTML = 'Пароль має містити хоча би 8 символів';
+		}
+		else passwordSpan.innerHTML = '';
+
+	}
+
+
+	function checkFormValidity() {
+		if (loginUnique && passwordRepeated && passwordValid) {
+			registrationButton.removeAttribute("disabled");
+		} else {
+			registrationButton.setAttribute("disabled", "true");
+		}
+		if (!loginUnique) loginSpan.innerHTML = 'Користувач з даним логіном вже існує';
+		else loginSpan.innerHTML = '';
+
+	}
+
+	function spanChecking() { }
+
+</script>

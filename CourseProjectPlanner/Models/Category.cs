@@ -1,9 +1,12 @@
-﻿namespace CourseProjectPlanner.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CourseProjectPlanner.Models
 {
     public class Category
     {
-        public int Id { get; set; }
+        [Key]
+        public int CategoryId { get; set; }
         public string Name { get; set; }
-        public string ImageFile { get; set; }
+        public string ImageName { get; set; }
     }
 }

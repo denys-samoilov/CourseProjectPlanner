@@ -59,6 +59,16 @@ body {
         color: #04AA6D;
     }
 
+    .green-button:disabled {
+        background-color: #a93226;
+        border: 1px solid #a93226;
+    }
+
+        .green-button:disabled:hover {
+            background-color: white;
+            color: #a93226;
+        }
+
 .center-element {
     max-width: fit-content;
     margin-left: auto;
