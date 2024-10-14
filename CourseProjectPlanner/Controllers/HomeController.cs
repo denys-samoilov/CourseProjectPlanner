@@ -55,6 +55,10 @@ namespace CourseProjectPlanner.Controllers
 
 		public IActionResult Login()
 		{
+			var users = _User.GetUsers;
+			ViewBag.UsersIds = users.Select(u => u.UserId).ToList();
+			ViewBag.UsersLogins = users.Select(u => u.Login).ToList();
+			ViewBag.UsersPasswords = users.Select(u => u.Password).ToList();
 			return View();
 		}
 
@@ -71,32 +75,12 @@ namespace CourseProjectPlanner.Controllers
 		}
 
 
-
-
-		[HttpGet]
-		public IActionResult Create123()
-		{
-			return View();
-		}
-
-		// POST метод для створення користувача
-		public IActionResult Create123(User model)
-		{
-			if (ModelState.IsValid)
-			{
-				_User.Add(model);
-				return RedirectToAction("Index");
-			}
-			return View(model);
-		}
-
-
         [HttpGet]
         public IActionResult Registration()
         {
 			var users = _User.GetUsers;
-			ViewBag.Users = users.Select(u => u.Login).ToList();
-            return View();
+			ViewBag.UsersLogins = users.Select(u => u.Login).ToList();
+			return View();
 		}
 
         // POST метод для створення користувача

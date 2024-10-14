@@ -71,6 +71,9 @@
 }
 
 <script>
+	alert(getCookie("UserId"));
+
+
 	let userLogins = @Html.Raw(Json.Serialize(ViewBag.Users));
 	let loginInput = document.getElementById("LoginInput");
 	let loginSpan = document.getElementById("LoginSpan");

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CourseProjectPlanner.styles.css" asp-append-version="true" />
+    <script src="/js/CookiesWork.js"></script>
 </head>
 <body>
     <header>
@@ -41,7 +42,7 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" asp-controller="Home" asp-action="Login">Увійти</a></li>
                             <li><a class="dropdown-item" asp-controller="Home" asp-action="Registration">Зареєструватись</a></li>
-                            <li><a class="dropdown-item" asp-controller="Home" asp-action="TestModal">Вийти</a></li>
+                            <li><a class="dropdown-item" onclick="deleteCookie('UserId');">Вийти</a></li>
                         </ul>
                     </li>
 
