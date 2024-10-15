@@ -13,7 +13,7 @@ namespace CourseProjectPlanner.Repository
         {
             this.db = _db;
         }
-        public IEnumerable<Spend> GetSpends => db.Spends;
+        public IEnumerable<Spend> GetSpends => db.Spends.Include(s => s.Users).Include(c => c.Categories);
 
         public void Add(Spend _Spend)
         {

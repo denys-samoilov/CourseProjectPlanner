@@ -33,7 +33,7 @@
 						</div>
 
 						<p class="text-center">Ви у нас вперше? <a asp-controller="Home" asp-action="Registration">Зареєструватись</a></p>
-
+						@foreach(var model in Model){@Html}
 
 					</form>
 
@@ -60,5 +60,7 @@
 				window.location = "Index";
 			}
 		}
+
+
 	}
 </script>

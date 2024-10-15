@@ -74,7 +74,7 @@
 	alert(getCookie("UserId"));
 
 
-	let userLogins = @Html.Raw(Json.Serialize(ViewBag.Users));
+	let userLogins = @Html.Raw(Json.Serialize(ViewBag.UsersLogins));
 	let loginInput = document.getElementById("LoginInput");
 	let loginSpan = document.getElementById("LoginSpan");
 	let registrationButton = document.getElementById("RegistrationButton");
