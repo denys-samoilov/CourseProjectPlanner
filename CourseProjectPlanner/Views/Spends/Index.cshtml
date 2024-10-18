@@ -1,0 +1,85 @@
+﻿@model IEnumerable<CourseProjectPlanner.Models.Spend>
+
+@{
+	ViewData["Title"] = "Index";
+	var categoryNames = ViewBag.CategoryNames as List<Category>;
+	var userLogins = ViewBag.UserLogins as List<User>;
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Price)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.SpendDate)
+			</th>
+			<th>
+				Category
+			</th>
+			<th>
+				User
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.SpendDate)
+				</td>
+				<td>
+					@{
+						string categoryName;
+						if(categoryNames.Any(c => c.CategoryId == item.CategoryId))
+						{
+							categoryName = categoryNames.First(c => c.CategoryId == item.CategoryId).Name;
+						}
+						else
+						{
+							categoryName = "Невідома категорія";
+						}
+					}
+					@categoryName
+				</td>
+				<td>
+					@{
+						string userLogin;
+						if (userLogins.Any(u => u.UserId == item.UserId))
+						{
+							userLogin = userLogins.First(u => u.UserId == item.UserId).Login;
+						}
+						else
+						{
+							userLogin = "Невідомий користувач";
+						}
+					}
+					@userLogin
+
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.SpendId">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.SpendId">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.SpendId">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

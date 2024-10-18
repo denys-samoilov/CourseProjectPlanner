@@ -83,7 +83,6 @@ namespace CourseProjectPlanner.Controllers
 			return View();
 		}
 
-        // POST метод для створення користувача
         public IActionResult Registration(User model)
         {
             if (ModelState.IsValid)
