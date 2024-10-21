@@ -52,12 +52,11 @@
 
 		let loginInput = document.getElementById('loginInput');
 		let passwordInput = document.getElementById('passwordInput');
-
 		for (let i = 0; i < userLogins.length; i++) {
 			if (userLogins[i] === loginInput.value.trim() && userPasswords[i] === passwordInput.value.trim()) {
 				alert("Вхід успішний");
-				setCookie("UserId", userIds[i], 30);
-				window.location = "Index";
+				SetCookie("UserId", userIds[i], 30);
+				window.location = "Spends";
 			}
 		}
 	}

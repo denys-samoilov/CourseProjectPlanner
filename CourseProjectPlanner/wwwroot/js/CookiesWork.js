@@ -1,11 +1,11 @@
-﻿function setCookie(cname, cvalue, exdays) {
+﻿function SetCookie(cname, cvalue, exdays) {
 	const d = new Date();
 	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
 	let expires = "expires=" + d.toUTCString();
 	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-function getCookie(cname) {
+function GetCookie(cname) {
 	let name = cname + "=";
 	let decodedCookie = decodeURIComponent(document.cookie);
 	let ca = decodedCookie.split(';');
@@ -20,8 +20,6 @@ function getCookie(cname) {
 	}
 	return "";
 }
-function deleteCookie(name) {
-	setCookie(name, "", {
-		'max-age': -1
-	})
+function DeleteCookie(name) {
+	document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }

@@ -10,6 +10,7 @@
     <script src="/js/CookiesWork.js"></script>
 </head>
 <body>
+    <input id="cookiesUserIdValue" />
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -42,7 +43,7 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" asp-controller="Home" asp-action="Login">Увійти</a></li>
                             <li><a class="dropdown-item" asp-controller="Home" asp-action="Registration">Зареєструватись</a></li>
-                            <li><a class="dropdown-item" onclick="deleteCookie('UserId');">Вийти</a></li>
+                            <li><a class="dropdown-item" onclick="DeleteCookie('UserId');">Вийти</a></li>
                         </ul>
                     </li>
 
@@ -67,5 +68,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        let userIdForm = document.getElementById('cookiesUserIdValue');
+        userIdForm.value = GetCookie("UserId");
+    </script>
 </body>
 </html>

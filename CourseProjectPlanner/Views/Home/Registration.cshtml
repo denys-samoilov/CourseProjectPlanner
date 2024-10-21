@@ -3,6 +3,10 @@
 }
 @model CourseProjectPlanner.Models.User
 
+@{
+	int c = 0;
+}
+
 <div class="container h-100">
 	<div class="row d-flex justify-content-center align-items-center h-100">
 		<div class="col-lg-12 col-xl-11">
@@ -71,10 +75,11 @@
 }
 
 <script>
-	alert(getCookie("UserId"));
+	alert(GetCookie("UserId"));
 
 
-	let userLogins = @Html.Raw(Json.Serialize(ViewBag.Users));
+
+	let userLogins = @Html.Raw(Json.Serialize(ViewBag.UsersLogins));
 	let loginInput = document.getElementById("LoginInput");
 	let loginSpan = document.getElementById("LoginSpan");
 	let registrationButton = document.getElementById("RegistrationButton");
@@ -155,7 +160,4 @@
 		else loginSpan.innerHTML = '';
 
 	}
-
-	function spanChecking() { }
-
 </script>

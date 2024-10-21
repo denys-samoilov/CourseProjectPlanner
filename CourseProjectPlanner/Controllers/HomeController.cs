@@ -9,11 +9,16 @@ namespace CourseProjectPlanner.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private readonly IUser _User;
+		private readonly ISpend _Spend;
+		private readonly ICategory _Category;
 
-		public HomeController(ILogger<HomeController> logger, IUser user)
+
+		public HomeController(ILogger<HomeController> logger, IUser user, ICategory category, ISpend spend)
 		{
 			_logger = logger;
 			_User = user;
+			_Category = category;
+			_Spend = spend;
 		}
 
 		public IActionResult Index()
@@ -28,8 +33,17 @@ namespace CourseProjectPlanner.Controllers
 
         public IActionResult Spends()
         {
-            return View();
-        }
+			var users = _User.GetUsers;
+			ViewBag.UserLogins = users.ToList();
+
+			var categories = _Category.GetCategories;
+			ViewBag.CategoryNames = categories.ToList();
+
+			string userId = Request.Cookies["UserId"].ToString();
+			ViewBag.UserId = userId;
+
+            return View(_Spend.GetSpends.OrderByDescending(c => c.SpendId));
+		}
 
         public IActionResult Statistics(int months)
         {
@@ -47,8 +61,8 @@ namespace CourseProjectPlanner.Controllers
                     { ViewBag.Months = $"останні {months} місяців"; break; }
 
             }
-
-            return View();
+			
+			return View(_Spend.GetSpends.Where(s => s.UserId == 6));
         }
 
 		
