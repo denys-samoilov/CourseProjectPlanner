@@ -31,41 +31,40 @@ namespace CourseProjectPlanner.Controllers
 			return View();
 		}
 
-        public IActionResult Spends()
-        {
+		public IActionResult Spends()
+		{
 			var users = _User.GetUsers;
-			ViewBag.UserLogins = users.ToList();
+			ViewBag.UsersList = users.ToList();
 
 			var categories = _Category.GetCategories;
-			ViewBag.CategoryNames = categories.ToList();
+			ViewBag.CategoriesList = categories.ToList();
 
-			string userId = Request.Cookies["UserId"].ToString();
-			ViewBag.UserId = userId;
+			int userId = Int32.Parse(Request.Cookies["UserId"]);
 
-            return View(_Spend.GetSpends.OrderByDescending(c => c.SpendId));
+			return View(_Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId));
 		}
 
-        public IActionResult Statistics(int months)
-        {
-            switch (months)
-            {
-                case 1:
-                    { ViewBag.Months = $"останній {months} місяць"; break; }
+		public IActionResult Statistics(int months)
+		{
+			switch (months)
+			{
+				case 1:
+					{ ViewBag.Months = $"останній {months} місяць"; break; }
 
-                case 2:
-                case 3:
-                case 4:
-                    { ViewBag.Months = $"останні {months} місяці"; break; }
+				case 2:
+				case 3:
+				case 4:
+					{ ViewBag.Months = $"останні {months} місяці"; break; }
+				default:
+					{ ViewBag.Months = $"останні {months} місяців"; break; }
+			}
+			var categories = _Category.GetCategories;
+			ViewBag.CategoriesList = categories.ToList();
+			int userId = Int32.Parse(Request.Cookies["UserId"]);
+			return View(_Spend.GetSpends.Where(s => s.UserId == userId));
+		}
 
-                default:
-                    { ViewBag.Months = $"останні {months} місяців"; break; }
 
-            }
-			
-			return View(_Spend.GetSpends.Where(s => s.UserId == 6));
-        }
-
-		
 
 		public IActionResult Login()
 		{
@@ -89,22 +88,22 @@ namespace CourseProjectPlanner.Controllers
 		}
 
 
-        [HttpGet]
-        public IActionResult Registration()
-        {
+		[HttpGet]
+		public IActionResult Registration()
+		{
 			var users = _User.GetUsers;
 			ViewBag.UsersLogins = users.Select(u => u.Login).ToList();
 			return View();
 		}
 
-        public IActionResult Registration(User model)
-        {
-            if (ModelState.IsValid)
-            {
-                _User.Add(model);
-                return RedirectToAction("Index");
-            }
-            return View(model);
-        }
-    }
+		public IActionResult Registration(User model)
+		{
+			if (ModelState.IsValid)
+			{
+				_User.Add(model);
+				return RedirectToAction("Login");
+			}
+			return View(model);
+		}
+	}
 }

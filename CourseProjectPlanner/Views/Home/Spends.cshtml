@@ -6,8 +6,7 @@
 
 @{
 	ViewData["Title"] = "Index";
-	List<Category> categoriesList = ViewBag.CategoryNames;
-	List<User> usersList = ViewBag.UserLogins;
+	List<Category> categoriesList = ViewBag.CategoriesList;
 }
 
 
@@ -21,7 +20,6 @@
 @{
 	foreach (var item in Model)
 	{
-		int userId = Int32.Parse(ViewBag.UserId);
 		string categoryImage = "/images/";
         string categoryName = "";
         decimal spendPrice;
@@ -39,8 +37,7 @@
 		{
 			@:<div class="d-flex center-element" style="max-width: 70%">
 		}
-		if(item.UserId == userId) // замість 6 взяти індекс з cookies UserId
-		{
+		
 		<div class="card col-md-3 col-10 mt-5">
 			<img class='mx-auto img-thumbnail'
 				 src=@categoryImage
@@ -55,7 +52,7 @@
 			</div>
 		</div>
 		counter++;
-		}
+		
 		if (counter % 4 == 0)
 		{
 			@:</div>
