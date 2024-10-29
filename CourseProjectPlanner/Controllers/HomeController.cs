@@ -40,6 +40,7 @@ namespace CourseProjectPlanner.Controllers
 			ViewBag.CategoriesList = categories.ToList();
 
 			int userId = Int32.Parse(Request.Cookies["UserId"]);
+			ViewBag.UserId = userId;
 
 			return View(_Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId));
 		}
@@ -102,6 +103,28 @@ namespace CourseProjectPlanner.Controllers
 			{
 				_User.Add(model);
 				return RedirectToAction("Login");
+			}
+			return View(model);
+		}
+
+		[HttpGet]
+		public IActionResult AddSpend()
+		{
+			var categories = _Category.GetCategories;
+			ViewBag.CategoriesList = categories.ToList();
+
+			var userId = Int32.Parse(Request.Cookies["UserId"]);
+			ViewBag.UserId = userId;
+			return View();
+		}
+
+		public IActionResult AddSpend(Spend model)
+		{
+			if (ModelState.IsValid)
+			{
+				_Spend.Add(model);
+				return RedirectToAction("Spends");
+
 			}
 			return View(model);
 		}

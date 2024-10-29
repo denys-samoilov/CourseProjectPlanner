@@ -9,9 +9,11 @@
 </div>
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
 @{
 	List<decimal> spendPricesList = new List<decimal>();
 	List<string> categoriesNamesList = new List<string>();
+	List<string> categoriesFilesList = new List<string>();
 	foreach (var category in categoriesList)
 	{
 		decimal categorySpendSum = 0;
@@ -25,9 +27,9 @@
 		if (categorySpendSum > 0)
 		{
 			categoriesNamesList.Add(category.Name);
+			categoriesFilesList.Add($"/images/{category.ImageName}");
 			spendPricesList.Add(categorySpendSum);
 		}
-
 	}
 
 }
@@ -36,9 +38,11 @@
 
 <div>
 	@{
+
 		decimal generalSum = 0;
 		for (int i = 0; i < categoriesNamesList.Count(); i++)
 		{
+			<img src="@categoriesFilesList[i]" style="width: 100px" />
 			<p>@categoriesNamesList[i]: ₴@spendPricesList[i]</p>
 			generalSum += spendPricesList[i];
 		}

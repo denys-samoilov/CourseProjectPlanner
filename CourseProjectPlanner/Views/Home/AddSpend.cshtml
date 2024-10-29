@@ -1,0 +1,164 @@
+﻿@model CourseProjectPlanner.Models.Spend
+
+@{
+	ViewData["Title"] = "AddSpend";
+	List<Category> categoriesList = ViewBag.CategoriesList;
+	int userId = ViewBag.UserId;
+}
+
+
+<link rel="stylesheet" href="~/css/modal.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
+
+
+
+<div id="myModal" class="modal">
+
+	<!-- Modal content -->
+	<div class="modal-content center-element">
+		<div>
+			<span class="close" id="closeButton">&times;</span>
+			<h5 class="text-center">Деталі про витрату</h5>
+		</div>
+		<div class="d-flex">
+			<div class="card col-md-3 col-10 mt-5">
+				<img class='mx-auto img-thumbnail' id="categoryImage"
+					 src="/images/@categoriesList[0].ImageName"
+					 width="100px" />
+				<div class="card-body text-center mx-auto">
+					<div class='cvp'>
+						<h5 class="card-title font-weight-bold" id="categoryName">@categoriesList[0].Name</h5>
+
+						<p class="card-text" id="priceOutput">₴0</p>
+						<p>
+							@DateOnly.FromDateTime(DateTime.Now).ToString("yyyy/MM/dd")
+						</p>
+					</div>
+				</div>
+			</div>
+
+
+
+			<form asp-action="AddSpend">
+
+				<div>
+					<label asp-for="Price" class="control-label">Ціна</label>
+					<input asp-for="Price" class="form-control" id="priceInput" value="0" />
+					<span asp-validation-for="Price" class="text-danger"></span>
+					<p></p>
+					<label asp-for="CategoryId" class="control-label"></label>
+					<select asp-for="CategoryId" class="form-control" id="categoryInput">
+						@foreach (var category in categoriesList)
+						{
+							<option value="@category.CategoryId">@category.Name</option>
+						}
+					</select>
+
+					<span asp-validation-for="CategoryId" class="text-danger"></span>
+					<p></p>
+					<label asp-for="Description" class="control-label"></label>
+					<textarea asp-for="Description" id="descriptionInput" class="form-control"></textarea>
+					<span asp-validation-for="Description" class="text-danger"></span>
+					<p class="text-center">
+						<input type="submit" value="Create" class="btn btn-primary green-button" />
+					</p>
+				</div>
+
+				<div style="display: none">
+				</div>
+
+				<input asp-for="UserId" class="form-control" value=@userId style="display:none" />
+				<span asp-validation-for="UserId" class="text-danger"></span>
+
+				<input asp-for="SpendDate" class="form-control" style="display: none" value="@DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd")" />
+				<span asp-validation-for="SpendDate" class="text-danger"></span>
+
+			</form>
+		</div>
+	</div>
+
+
+
+</div>
+
+@*
+<h4>Spend</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="AddSpend">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="Price" class="control-label"></label>
+				<input asp-for="Price" class="form-control" />
+				<span asp-validation-for="Price" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Description" class="control-label"></label>
+				<input asp-for="Description" class="form-control" />
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="SpendDate" class="control-label"></label>
+				<input asp-for="SpendDate" class="form-control" />
+				<span asp-validation-for="SpendDate" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="CategoryId" class="control-label"></label>
+				<input asp-for="CategoryId" class="form-control" />
+				<span asp-validation-for="CategoryId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="UserId" class="control-label"></label>
+				<input asp-for="UserId" class="form-control" />
+				<span asp-validation-for="UserId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div> *@
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+
+<script>
+	let modal = document.getElementById("myModal");
+
+
+	let close = document.getElementById("closeButton");
+
+	let categoryInput = document.getElementById("categoryInput");
+	let categoryName = document.getElementById("categoryName")
+	let categoryImage = document.getElementById("categoryImage")
+
+	let priceInput = document.getElementById("priceInput");
+	let priceOutput = document.getElementById("priceOutput");
+
+	modal.style.display = "block";
+
+
+	priceInput.oninput = function () {
+		priceOutput.textContent = `₴${priceInput.value}`;
+	};
+
+	categoryInput.onchange = function () {
+		let selectedCategory = categoryInput.value;
+
+		categoryImage.src = `/images/${selectedCategory}`;
+		categoryName.textContent = categoryInput.options[categoryInput.selectedIndex].textContent;
+
+	};
+
+	close.onclick = function () {
+		window.location = "Spends";
+
+	}
+
+</script>

@@ -11,6 +11,9 @@
 
 
 
+<div class="text-center">
+<a type="button" style="width: 80%" class="text-center green-button center-element" asp-controller="Home" asp-action="AddSpend">Додати новий запис</a>
+</div>
 <link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
 
 @{
@@ -20,13 +23,13 @@
 @{
 	foreach (var item in Model)
 	{
-		string categoryImage = "/images/";
-        string categoryName = "";
+		string categoryImage = "";
+		string categoryName = "";
         decimal spendPrice;
         string spendDate;
 		if(categoriesList.Any(c => c.CategoryId == item.CategoryId))
 		{
-			categoryImage = categoryImage + categoriesList.First(c => c.CategoryId == item.CategoryId).ImageName;
+			categoryImage = $"/images/{categoriesList.First(c => c.CategoryId == item.CategoryId).ImageName}";
 			categoryName = categoriesList.First(c => c.CategoryId == item.CategoryId).Name;
 		}
 
@@ -47,7 +50,7 @@
 					<h5 class="card-title font-weight-bold">@categoryName</h5>
 					<p class="card-text">₴@spendPrice</p>
 					<p>@spendDate</p>
-					<a href="#" class="btn details px-auto">Деталі</a><br />
+					<a href="#" class="btn details px-auto" value = "@item.SpendId">Деталі</a><br />
 				</div>
 			</div>
 		</div>
@@ -63,8 +66,5 @@
 
 }
 
-<script>
-	let cookie = getCookie("UserId");
-</script>
 
 
