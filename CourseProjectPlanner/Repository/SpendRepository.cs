@@ -1,6 +1,7 @@
 ﻿using ASP_Core_EF.Repository;
 using CourseProjectPlanner.Models;
 using CourseProjectPlanner.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CourseProjectPlanner.Repository
 {
@@ -31,6 +32,15 @@ namespace CourseProjectPlanner.Repository
         {
             Spend dbEntity = db.Spends.Find(id);
             db.Spends.Remove(dbEntity);
+            db.SaveChanges();
+        }
+
+        public void Edit(Spend _Spend) 
+        {
+			Spend dbEntity = db.Spends.Find(_Spend.SpendId);
+            dbEntity.Price = _Spend.Price;
+            dbEntity.Description= _Spend.Description;
+            dbEntity.CategoryId = _Spend.CategoryId;
             db.SaveChanges();
         }
     }

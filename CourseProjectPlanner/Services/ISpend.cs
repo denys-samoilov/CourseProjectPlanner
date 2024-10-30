@@ -6,5 +6,6 @@
         Spend GetSpend(int id);
         void Add(Spend _Spend);
         void Remove(int id);  
+        void Edit(Spend _Spend);
     }
 }

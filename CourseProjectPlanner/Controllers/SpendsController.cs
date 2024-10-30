@@ -39,5 +39,24 @@ namespace CourseProjectPlanner.Controllers
 			}
 			return View(model);
 		}
+
+		[HttpGet]
+		public IActionResult Edit(int id) 
+		{
+			var model = _Spend.GetSpend(id);
+			return View(model);
+		}
+
+		[HttpPost]
+		public IActionResult Edit(Spend model) 
+		{
+			if (ModelState.IsValid)
+			{
+				_Spend.Edit(model);
+				return RedirectToAction("Spends");
+			}
+			return View(model);
+
+		}
 	}
 }

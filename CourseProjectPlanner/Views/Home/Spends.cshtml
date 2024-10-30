@@ -50,7 +50,7 @@
 					<h5 class="card-title font-weight-bold">@categoryName</h5>
 					<p class="card-text">₴@spendPrice</p>
 					<p>@spendDate</p>
-					<a href="#" class="btn details px-auto" value = "@item.SpendId">Деталі</a><br />
+					<a class="btn details px-auto"asp-action="EditSpend" asp-route-id="@item.SpendId">Деталі</a><br />
 				</div>
 			</div>
 		</div>

@@ -118,6 +118,7 @@ namespace CourseProjectPlanner.Controllers
 			return View();
 		}
 
+		[HttpPost]
 		public IActionResult AddSpend(Spend model)
 		{
 			if (ModelState.IsValid)
@@ -128,5 +129,39 @@ namespace CourseProjectPlanner.Controllers
 			}
 			return View(model);
 		}
+
+		public IActionResult EditSpend(int id)
+		{
+			var categories = _Category.GetCategories;
+			ViewBag.CategoriesList = categories.ToList();
+
+			var userId = Int32.Parse(Request.Cookies["UserId"]);
+			ViewBag.UserId = userId;
+			var model = _Spend.GetSpend(id);
+			return View(model);
+		}
+
+		[HttpPost]
+		public IActionResult EditSpend(Spend model)
+		{
+			if (ModelState.IsValid)
+			{
+				_Spend.Edit(model);
+				return RedirectToAction("Spends");
+			}
+			return View(model);
+		}
+		[HttpPost]
+		public IActionResult RemoveSpend(Spend model) 
+		{
+			if (ModelState.IsValid)
+			{
+				_Spend.Remove(model.SpendId);
+				return RedirectToAction("Spends");
+			}
+			return View(model);
+		}
+
+
 	}
 }

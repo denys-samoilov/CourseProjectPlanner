@@ -1,10 +1,16 @@
 ﻿@model CourseProjectPlanner.Models.Spend
 
 @{
+	ViewData["Title"] = "EditSpend";
+}
+
+@{
 	ViewData["Title"] = "AddSpend";
 	List<Category> categoriesList = ViewBag.CategoriesList;
 	List<string> imageNameCategoriesList = new List<string>();
 
+	string categoryName = categoriesList.Where(c => c.CategoryId == Model.CategoryId).Select(c => c.Name).FirstOrDefault();
+	string categoryImage = categoriesList.Where(c => c.CategoryId == Model.CategoryId).Select(c => c.ImageName).FirstOrDefault();
 	int userId = ViewBag.UserId;
 }
 
@@ -14,7 +20,6 @@
 		imageNameCategoriesList.Add(category.ImageName);
 	}
 }
-
 
 <link rel="stylesheet" href="~/css/modal.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
@@ -32,13 +37,13 @@
 		<div class="d-flex">
 			<div class="card col-md-3 col-10 mt-5">
 				<img class='mx-auto img-thumbnail' id="categoryImage"
-					 src="/images/@categoriesList[0].ImageName"
+					 src="/images/@categoryImage"
 					 width="100px" />
 				<div class="card-body text-center mx-auto">
 					<div class='cvp'>
-						<h5 class="card-title font-weight-bold" id="categoryName">@categoriesList[0].Name</h5>
+						<h5 class="card-title font-weight-bold" id="categoryName">@categoryName</h5>
 
-						<p class="card-text" id="priceOutput">₴0</p>
+						<p class="card-text" id="priceOutput">₴@Model.Price</p>
 						<p>
 							@DateOnly.FromDateTime(DateTime.Now).ToString("yyyy/MM/dd")
 						</p>
@@ -48,11 +53,12 @@
 
 
 
-			<form asp-action="AddSpend">
-
+			<form asp-action="EditSpend">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<input type="hidden" asp-for="SpendId" />
 				<div>
 					<label asp-for="Price" class="control-label">Ціна</label>
-					<input asp-for="Price" class="form-control" id="priceInput" value="0" />
+					<input asp-for="Price" class="form-control" id="priceInput" />
 					<span asp-validation-for="Price" class="text-danger"></span>
 					<p></p>
 					<label asp-for="CategoryId" class="control-label"></label>
@@ -68,11 +74,14 @@
 					<label asp-for="Description" class="control-label"></label>
 					<textarea asp-for="Description" id="descriptionInput" class="form-control"></textarea>
 					<span asp-validation-for="Description" class="text-danger"></span>
-					<p class="text-center">
-						<input type="submit" value="Create" class="btn btn-primary green-button" />
-					</p>
-				</div>
 
+				</div>
+				<p class="text-center">
+					<input type="submit" value="Зберегти зміни" class=" green-button" />
+				</p>
+				<p class="text-center">
+					<a type="button" asp-controller="Home" asp-action="RemoveSpend" class="red-button">Видалити витрату</a>
+				</p>
 				<div style="display: none">
 				</div>
 
@@ -89,45 +98,6 @@
 
 
 </div>
-
-@*
-<h4>Spend</h4>
-<hr />
-<div class="row">
-	<div class="col-md-4">
-		<form asp-action="AddSpend">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div class="form-group">
-				<label asp-for="Price" class="control-label"></label>
-				<input asp-for="Price" class="form-control" />
-				<span asp-validation-for="Price" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Description" class="control-label"></label>
-				<input asp-for="Description" class="form-control" />
-				<span asp-validation-for="Description" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="SpendDate" class="control-label"></label>
-				<input asp-for="SpendDate" class="form-control" />
-				<span asp-validation-for="SpendDate" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="CategoryId" class="control-label"></label>
-				<input asp-for="CategoryId" class="form-control" />
-				<span asp-validation-for="CategoryId" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="UserId" class="control-label"></label>
-				<input asp-for="UserId" class="form-control" />
-				<span asp-validation-for="UserId" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-primary" />
-			</div>
-		</form>
-	</div>
-</div> *@
 
 
 @section Scripts {
@@ -170,7 +140,7 @@
 	};
 
 	close.onclick = function () {
-		window.location = "Spends";
+		window.history.go(-1);
 
 	}
 
