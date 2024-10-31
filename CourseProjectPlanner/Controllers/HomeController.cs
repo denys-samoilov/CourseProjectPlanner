@@ -62,7 +62,8 @@ namespace CourseProjectPlanner.Controllers
 			var categories = _Category.GetCategories;
 			ViewBag.CategoriesList = categories.ToList();
 			int userId = Int32.Parse(Request.Cookies["UserId"]);
-			return View(_Spend.GetSpends.Where(s => s.UserId == userId));
+			DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
+			return View(_Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo));
 		}
 
 
@@ -130,6 +131,7 @@ namespace CourseProjectPlanner.Controllers
 			return View(model);
 		}
 
+		[HttpGet]
 		public IActionResult EditSpend(int id)
 		{
 			var categories = _Category.GetCategories;
@@ -151,17 +153,27 @@ namespace CourseProjectPlanner.Controllers
 			}
 			return View(model);
 		}
-		[HttpPost]
-		public IActionResult RemoveSpend(Spend model) 
+
+		[HttpGet]
+		public IActionResult RemoveSpend(int id)
 		{
-			if (ModelState.IsValid)
-			{
-				_Spend.Remove(model.SpendId);
-				return RedirectToAction("Spends");
-			}
+			var model = _Spend.GetSpend(id);
 			return View(model);
 		}
 
+		[HttpPost]
+		public IActionResult RemoveSpend(Spend model)
+		{
+			_Spend.Remove(model.SpendId);
+			return RedirectToAction("Spends");
+		}
 
+
+		//[HttpPost]
+		//public IActionResult RemoveSpend(int id)
+		//{
+		//	_Spend.Remove(id);
+		//	return RedirectToAction("Spends");
+		//}
 	}
 }

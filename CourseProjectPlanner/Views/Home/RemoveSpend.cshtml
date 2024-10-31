@@ -1,0 +1,101 @@
+﻿@model CourseProjectPlanner.Models.Spend
+
+@{
+    ViewData["Title"] = "RemoveSpend";
+}
+<link rel="stylesheet" href="~/css/modal.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
+
+@* <h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Spend</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SpendDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpendDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CategoryId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+    </dl>
+    
+    <form asp-action="RemoveSpend">
+        <input type="hidden" asp-for="SpendId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div> *@
+
+<div id="myModal" class="modal">
+
+	<!-- Modal content -->
+	<div class="modal-content center-element">
+		<div>
+			<span class="close" id="closeButton">&times;</span>
+		</div>
+		<div class="d-flex">
+            <h3 class ="text-center">Ви впевнені, що хочете видалити витрату?</h3>
+            
+		</div>
+        <div class ="center-element">
+        <form asp-action="RemoveSpend" >
+            <input type="hidden" asp-for="SpendId" />
+            <input type="submit" value="Так" class="green-button" style="float: right" />
+            <a type="button" asp-controller="Home" asp-action="Spends" class="red-button" style="float: right">Ні</a>
+        </form>
+        </div>
+	</div>
+
+
+
+</div>
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+
+<script>
+	let modal = document.getElementById("myModal");
+
+
+	let close = document.getElementById("closeButton");
+
+	
+
+	modal.style.display = "block";
+
+
+	close.onclick = function () {
+		window.history.go(-1);
+
+	}
+
+</script>

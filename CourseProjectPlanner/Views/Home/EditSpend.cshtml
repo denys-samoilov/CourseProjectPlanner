@@ -80,7 +80,7 @@
 					<input type="submit" value="Зберегти зміни" class=" green-button" />
 				</p>
 				<p class="text-center">
-					<a type="button" asp-controller="Home" asp-action="RemoveSpend" class="red-button">Видалити витрату</a>
+					<a type="button" asp-controller="Home" asp-action="RemoveSpend" asp-route-id="@Model.SpendId" class="red-button">Видалити витрату</a>
 				</p>
 				<div style="display: none">
 				</div>
