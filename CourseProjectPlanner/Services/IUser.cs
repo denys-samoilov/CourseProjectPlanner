@@ -6,5 +6,8 @@
         User GetUser(int id);
         void Add (User _User);
         void Remove(int id);
+
+        public void Edit(User _User);
+       
     }
 }

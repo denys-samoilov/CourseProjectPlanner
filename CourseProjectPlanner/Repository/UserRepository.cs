@@ -31,5 +31,14 @@ namespace CourseProjectPlanner.Repository
             db.Remove(dbEntity);
             db.SaveChanges();
         }
+
+        public void Edit(User _User)
+        {
+            User dbEntity = db.Users.Find(_User.UserId);
+            dbEntity.Login = _User.Login;
+            dbEntity.Password = _User.Password;
+            dbEntity.Name = _User.Name;
+            db.SaveChanges();
+        }
     }
 }
