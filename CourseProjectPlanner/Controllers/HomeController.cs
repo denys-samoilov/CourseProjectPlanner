@@ -1,6 +1,7 @@
 using CourseProjectPlanner.Models;
 using CourseProjectPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 
 namespace CourseProjectPlanner.Controllers
@@ -12,23 +13,44 @@ namespace CourseProjectPlanner.Controllers
 		private readonly ISpend _Spend;
 		private readonly ICategory _Category;
 
+        
 
 		public HomeController(ILogger<HomeController> logger, IUser user, ICategory category, ISpend spend)
 		{
-			_logger = logger;
+            _logger = logger;
 			_User = user;
 			_Category = category;
 			_Spend = spend;
 		}
+        public int GetUserIdFromCookies()
+        {
+			int userId;
+			if (Request.Cookies.TryGetValue("UserId", out string userIdString))
+			{
+				userId = Int32.Parse(userIdString);
+			}
+			else
+			{
+				userId = 0;
+			}
+            ViewBag.UserId = userId;
 
-		public IActionResult Index()
+			return userId;
+        }
+
+        public IActionResult Index()
 		{
-			return View();
+
+            GetUserIdFromCookies();
+
+            return View();
 		}
 
 		public IActionResult Privacy()
 		{
-			return View();
+            GetUserIdFromCookies();
+
+            return View();
 		}
 
 		public IActionResult Spends()
@@ -39,15 +61,17 @@ namespace CourseProjectPlanner.Controllers
 			var categories = _Category.GetCategories;
 			ViewBag.CategoriesList = categories.ToList();
 
-			int userId = Int32.Parse(Request.Cookies["UserId"]);
-			ViewBag.UserId = userId;
+            int userId = GetUserIdFromCookies();
 
-			return View(_Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId));
+
+            return View(_Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId));
 		}
 
 		public IActionResult Statistics(int months)
 		{
-			switch (months)
+            GetUserIdFromCookies();
+
+            switch (months)
 			{
 				case 1:
 					{ ViewBag.Months = $"останній {months} місяць"; break; }
@@ -61,8 +85,8 @@ namespace CourseProjectPlanner.Controllers
 			}
 			var categories = _Category.GetCategories;
 			ViewBag.CategoriesList = categories.ToList();
-			int userId = Int32.Parse(Request.Cookies["UserId"]);
-			DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
+			int userId = GetUserIdFromCookies();
+            DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
 			return View(_Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo));
 		}
 
@@ -70,7 +94,9 @@ namespace CourseProjectPlanner.Controllers
 
 		public IActionResult Login()
 		{
-			var users = _User.GetUsers;
+            GetUserIdFromCookies();
+
+            var users = _User.GetUsers;
 			ViewBag.UsersIds = users.Select(u => u.UserId).ToList();
 			ViewBag.UsersLogins = users.Select(u => u.Login).ToList();
 			ViewBag.UsersPasswords = users.Select(u => u.Password).ToList();
@@ -93,7 +119,9 @@ namespace CourseProjectPlanner.Controllers
 		[HttpGet]
 		public IActionResult Registration()
 		{
-			var users = _User.GetUsers;
+            GetUserIdFromCookies();
+
+            var users = _User.GetUsers;
 			ViewBag.UsersLogins = users.Select(u => u.Login).ToList();
 			return View();
 		}
@@ -114,9 +142,9 @@ namespace CourseProjectPlanner.Controllers
 			var categories = _Category.GetCategories;
 			ViewBag.CategoriesList = categories.ToList();
 
-			var userId = Int32.Parse(Request.Cookies["UserId"]);
-			ViewBag.UserId = userId;
-			return View();
+            GetUserIdFromCookies();
+
+            return View();
 		}
 
 		[HttpPost]
@@ -137,9 +165,9 @@ namespace CourseProjectPlanner.Controllers
 			var categories = _Category.GetCategories;
 			ViewBag.CategoriesList = categories.ToList();
 
-			var userId = Int32.Parse(Request.Cookies["UserId"]);
-			ViewBag.UserId = userId;
-			var model = _Spend.GetSpend(id);
+            GetUserIdFromCookies();
+
+            var model = _Spend.GetSpend(id);
 			return View(model);
 		}
 
@@ -176,4 +204,6 @@ namespace CourseProjectPlanner.Controllers
 		//	return RedirectToAction("Spends");
 		//}
 	}
+    
 }
+

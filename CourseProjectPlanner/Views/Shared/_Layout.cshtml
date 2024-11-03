@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,9 +41,9 @@
                             <img src="~/images/login-avatar.png" class="headerIcon">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Login">Увійти</a></li>
-                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Registration">Зареєструватись</a></li>
-                            <li><a class="dropdown-item" onclick="DeleteCookie('UserId');">Вийти</a></li>
+                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Login" id ="loginDropdown">Увійти</a></li>
+                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Registration" id="registrationDropdown">Зареєструватись</a></li>
+                            <li><a class="dropdown-item" onclick="DeleteCookie('UserId');" id="logoutDropdown">Вийти</a></li>
                         </ul>
                     </li>
 
@@ -69,8 +70,26 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
-        let userIdForm = document.getElementById('cookiesUserIdValue');
-        userIdForm.value = GetCookie("UserId");
+        let logoutDropdown = document.getElementById("logoutDropdown");
+        let loginDropdown = document.getElementById("loginDropdown");
+        let registrationDropdown = document.getElementById("registrationDropdown");
+
+        let cookieValue = @Html.Raw(Json.Serialize(ViewBag.UserId));
+
+        if (cookieValue != 0) {
+            logoutDropdown.style.display = "block";
+            loginDropdown.style.display = "none";
+            registrationDropdown.style.display = "none";
+        }
+
+        else 
+        {
+            logoutDropdown.style.display = "none";
+            loginDropdown.style.display = "block";
+            registrationDropdown.style.display = "block";
+        }
+
+
     </script>
 </body>
 </html>
