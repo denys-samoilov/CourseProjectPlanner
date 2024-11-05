@@ -43,7 +43,7 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" asp-controller="Home" asp-action="Login" id ="loginDropdown">Увійти</a></li>
                             <li><a class="dropdown-item" asp-controller="Home" asp-action="Registration" id="registrationDropdown">Зареєструватись</a></li>
-                            <li><a class="dropdown-item" onclick="DeleteCookie('UserId');" id="logoutDropdown">Вийти</a></li>
+                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Index" onclick="DeleteCookie('UserId');" id="logoutDropdown">Вийти</a></li>
                         </ul>
                     </li>
 

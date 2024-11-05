@@ -41,7 +41,10 @@ namespace CourseProjectPlanner.Controllers
         public IActionResult Index()
 		{
 
-            GetUserIdFromCookies();
+            if (GetUserIdFromCookies() != 0)
+            {
+                return RedirectToAction("Spends");
+            }
 
             return View();
 		}
@@ -55,7 +58,12 @@ namespace CourseProjectPlanner.Controllers
 
 		public IActionResult Spends()
 		{
-			var users = _User.GetUsers;
+            if (GetUserIdFromCookies() == 0)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var users = _User.GetUsers;
 			ViewBag.UsersList = users.ToList();
 
 			var categories = _Category.GetCategories;
@@ -69,25 +77,29 @@ namespace CourseProjectPlanner.Controllers
 
 		public IActionResult Statistics(int months)
 		{
-            GetUserIdFromCookies();
-
-            switch (months)
+			if (GetUserIdFromCookies() == 0)
 			{
-				case 1:
-					{ ViewBag.Months = $"останній {months} місяць"; break; }
-
-				case 2:
-				case 3:
-				case 4:
-					{ ViewBag.Months = $"останні {months} місяці"; break; }
-				default:
-					{ ViewBag.Months = $"останні {months} місяців"; break; }
+				return RedirectToAction("Login");
 			}
-			var categories = _Category.GetCategories;
-			ViewBag.CategoriesList = categories.ToList();
-			int userId = GetUserIdFromCookies();
-            DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
-			return View(_Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo));
+			
+				switch (months)
+				{
+					case 1:
+						{ ViewBag.Months = $"останній {months} місяць"; break; }
+
+					case 2:
+					case 3:
+					case 4:
+						{ ViewBag.Months = $"останні {months} місяці"; break; }
+					default:
+						{ ViewBag.Months = $"останні {months} місяців"; break; }
+				}
+				var categories = _Category.GetCategories;
+				ViewBag.CategoriesList = categories.ToList();
+				int userId = GetUserIdFromCookies();
+				DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
+				return View(_Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo));
+			
 		}
 
 
@@ -139,7 +151,12 @@ namespace CourseProjectPlanner.Controllers
 		[HttpGet]
 		public IActionResult AddSpend()
 		{
-			var categories = _Category.GetCategories;
+            if (GetUserIdFromCookies() == 0)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var categories = _Category.GetCategories;
 			ViewBag.CategoriesList = categories.ToList();
 
             GetUserIdFromCookies();
@@ -162,7 +179,11 @@ namespace CourseProjectPlanner.Controllers
 		[HttpGet]
 		public IActionResult EditSpend(int id)
 		{
-			var categories = _Category.GetCategories;
+            if (GetUserIdFromCookies() == 0)
+            {
+                return RedirectToAction("Login");
+            }
+            var categories = _Category.GetCategories;
 			ViewBag.CategoriesList = categories.ToList();
 
             GetUserIdFromCookies();
@@ -185,7 +206,11 @@ namespace CourseProjectPlanner.Controllers
 		[HttpGet]
 		public IActionResult RemoveSpend(int id)
 		{
-			var model = _Spend.GetSpend(id);
+            if (GetUserIdFromCookies() == 0)
+            {
+                return RedirectToAction("Login");
+            }
+            var model = _Spend.GetSpend(id);
 			return View(model);
 		}
 
