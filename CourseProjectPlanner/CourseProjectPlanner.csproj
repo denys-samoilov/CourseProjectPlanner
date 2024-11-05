@@ -4,6 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+<<<<<<< Updated upstream
+=======
+    <UserSecretsId>88411b39-b674-4f2a-bace-e3df4051983e</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+>>>>>>> Stashed changes
   </PropertyGroup>
 
   <ItemGroup>
