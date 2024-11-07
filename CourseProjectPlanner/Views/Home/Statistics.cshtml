@@ -36,22 +36,6 @@
 
 <div id="barStatistics" class="center-element"></div>
 
-<div>
-	@{
-
-		decimal generalSum = 0;
-		for (int i = 0; i < categoriesNamesList.Count(); i++)
-		{
-			<img src="@categoriesFilesList[i]" style="width: 100px" />
-			<p>@categoriesNamesList[i]: ₴@spendPricesList[i]</p>
-			generalSum += spendPricesList[i];
-		}
-		<p>Витрачено усього: ₴@generalSum</p>
-	}
-</div>
-
-
-
 
 <script>
 	let dataNames = @Html.Raw(Json.Serialize(categoriesNamesList));

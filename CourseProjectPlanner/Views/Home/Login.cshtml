@@ -25,16 +25,15 @@
 							<div data-mdb-input-init class="form-outline flex-fill mb-0">
 								<label class="form-label" for="form3Example4c">Пароль</label>
 								<input type="password" id="passwordInput" class="form-control" />
+								<span class="text-danger" id="ErrorSpan"></span>
 							</div>
 						</div>
 
 						<div class="d-flex justify-content-center mx-4">
-							<button class="text-center green-button" onclick="LoginPress()">Увійти</button>
+							<button type="button" class="text-center green-button" onclick="LoginPress()">Увійти</button>
 						</div>
 
 						<p class="text-center">Ви у нас вперше? <a asp-controller="Home" asp-action="Registration">Зареєструватись</a></p>
-
-
 					</form>
 
 				</div>
@@ -45,19 +44,39 @@
 </div>
 
 <script>
-	function LoginPress() {
-		let userIds = @Html.Raw(Json.Serialize(ViewBag.UsersIds));
-		let userLogins = @Html.Raw(Json.Serialize(ViewBag.UsersLogins));
-		let userPasswords = @Html.Raw(Json.Serialize(ViewBag.UsersPasswords));
+	let loginInput = document.getElementById('loginInput');
+	let passwordInput = document.getElementById('passwordInput');
+	let errorSpan = document.getElementById('ErrorSpan');
+	let userIds = @Html.Raw(Json.Serialize(ViewBag.UsersIds));
+	let userLogins = @Html.Raw(Json.Serialize(ViewBag.UsersLogins));
+	let userPasswords = @Html.Raw(Json.Serialize(ViewBag.UsersPasswords));
 
-		let loginInput = document.getElementById('loginInput');
-		let passwordInput = document.getElementById('passwordInput');
+	function LoginPress() {
+		let k = 0;
 		for (let i = 0; i < userLogins.length; i++) {
 			if (userLogins[i] === loginInput.value.trim() && userPasswords[i] === passwordInput.value.trim()) {
+				k++;
 				alert("Вхід успішний");
 				SetCookie("UserId", userIds[i], 30);
 				window.location = "Spends";
+				return;
 			}
 		}
+
+		if (k === 0) {
+			errorSpan.innerHTML = 'Невірний логін чи пароль';
+		}
+	}
+
+	loginInput.oninput = function () {
+		OnInput();
+	}
+
+	passwordInput.oninput = function () {
+		OnInput();
+	}
+
+	function OnInput() {
+		errorSpan.innerHTML = '';
 	}
 </script>
