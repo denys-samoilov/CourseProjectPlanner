@@ -52,10 +52,10 @@
 
 				<div>
 					<label asp-for="Price" class="control-label">Ціна</label>
-					<input asp-for="Price" class="form-control" id="priceInput" value="0" />
+					<input asp-for="Price" class="form-control" id="priceInput" value="0.00" />
 					<span asp-validation-for="Price" class="text-danger"></span>
 					<p></p>
-					<label asp-for="CategoryId" class="control-label"></label>
+					<label asp-for="CategoryId" class="control-label">Категорія</label>
 					<select asp-for="CategoryId" class="form-control" id="categoryInput">
 						@foreach (var category in categoriesList)
 						{
@@ -65,11 +65,11 @@
 
 					<span asp-validation-for="CategoryId" class="text-danger"></span>
 					<p></p>
-					<label asp-for="Description" class="control-label"></label>
+					<label asp-for="Description" class="control-label">Опис</label>
 					<textarea asp-for="Description" id="descriptionInput" class="form-control"></textarea>
 					<span asp-validation-for="Description" class="text-danger"></span>
 					<p class="text-center">
-						<input type="submit" value="Create" class="btn btn-primary green-button" />
+						<input type="submit" value="Створити" class="btn btn-primary green-button" />
 					</p>
 				</div>
 
