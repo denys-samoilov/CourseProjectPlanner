@@ -22,8 +22,6 @@
 
 
 <div id="myModal" class="modal">
-
-	<!-- Modal content -->
 	<div class="modal-content center-element">
 		<div>
 			<span class="close" id="closeButton">&times;</span>
@@ -38,7 +36,7 @@
 					<div class='cvp'>
 						<h5 class="card-title font-weight-bold" id="categoryName">@categoriesList[0].Name</h5>
 
-						<p class="card-text" id="priceOutput">₴0</p>
+						<p class="card-text" id="priceOutput">₴0.00</p>
 						<p>
 							@DateOnly.FromDateTime(DateTime.Now).ToString("yyyy/MM/dd")
 						</p>
@@ -69,7 +67,7 @@
 					<textarea asp-for="Description" id="descriptionInput" class="form-control"></textarea>
 					<span asp-validation-for="Description" class="text-danger"></span>
 					<p class="text-center">
-						<input type="submit" value="Створити" class="btn btn-primary green-button" />
+						<input type="submit" value="Створити" class="green-button" />
 					</p>
 				</div>
 
@@ -90,44 +88,6 @@
 
 </div>
 
-@*
-<h4>Spend</h4>
-<hr />
-<div class="row">
-	<div class="col-md-4">
-		<form asp-action="AddSpend">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div class="form-group">
-				<label asp-for="Price" class="control-label"></label>
-				<input asp-for="Price" class="form-control" />
-				<span asp-validation-for="Price" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Description" class="control-label"></label>
-				<input asp-for="Description" class="form-control" />
-				<span asp-validation-for="Description" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="SpendDate" class="control-label"></label>
-				<input asp-for="SpendDate" class="form-control" />
-				<span asp-validation-for="SpendDate" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="CategoryId" class="control-label"></label>
-				<input asp-for="CategoryId" class="form-control" />
-				<span asp-validation-for="CategoryId" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="UserId" class="control-label"></label>
-				<input asp-for="UserId" class="form-control" />
-				<span asp-validation-for="UserId" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-primary" />
-			</div>
-		</form>
-	</div>
-</div> *@
 
 
 @section Scripts {

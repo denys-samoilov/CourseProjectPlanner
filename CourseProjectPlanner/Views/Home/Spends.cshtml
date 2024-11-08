@@ -1,11 +1,8 @@
-﻿@{
-	ViewData["Title"] = "Витрати";
-}
-
+﻿
 @model IEnumerable<CourseProjectPlanner.Models.Spend>
 
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "Витрати";
 	List<Category> categoriesList = ViewBag.CategoriesList;
 }
 
@@ -34,7 +31,7 @@
 		}
 
 		spendPrice = item.Price;
-		spendDate = item.SpendDate.ToString("MM/dd/yyyy");
+		spendDate = item.SpendDate.ToString("dd/MM/yyyy");
 
 		if (counter % 4 == 0)
 		{

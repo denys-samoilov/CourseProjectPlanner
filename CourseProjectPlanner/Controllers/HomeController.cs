@@ -115,11 +115,6 @@ namespace CourseProjectPlanner.Controllers
 			return View();
 		}
 
-		public IActionResult Modal()
-		{
-			return View();
-		}
-
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
@@ -183,10 +178,14 @@ namespace CourseProjectPlanner.Controllers
             {
                 return RedirectToAction("Login");
             }
+
             var categories = _Category.GetCategories;
 			ViewBag.CategoriesList = categories.ToList();
 
-            GetUserIdFromCookies();
+			if(_Spend.GetSpend(id).UserId != GetUserIdFromCookies())
+			{
+				return RedirectToAction("Spends");
+			}
 
             var model = _Spend.GetSpend(id);
 			return View(model);
@@ -210,6 +209,10 @@ namespace CourseProjectPlanner.Controllers
             {
                 return RedirectToAction("Login");
             }
+            if (_Spend.GetSpend(id).UserId != GetUserIdFromCookies())
+            {
+                return RedirectToAction("Spends");
+            }
             var model = _Spend.GetSpend(id);
 			return View(model);
 		}
@@ -222,12 +225,7 @@ namespace CourseProjectPlanner.Controllers
 		}
 
 
-		//[HttpPost]
-		//public IActionResult RemoveSpend(int id)
-		//{
-		//	_Spend.Remove(id);
-		//	return RedirectToAction("Spends");
-		//}
+		
 	}
     
 }

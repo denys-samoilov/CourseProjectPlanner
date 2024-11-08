@@ -34,8 +34,19 @@
 
 }
 
-<div id="barStatistics" class="center-element"></div>
+<div id="barStatistics" class="center-element text-center"></div>
 
+<div class="text-center">
+	@{
+
+		decimal generalSum = 0;
+		for (int i = 0; i < categoriesNamesList.Count(); i++)
+		{
+			generalSum += spendPricesList[i];
+		}
+		<h5>Витрачено усього: ₴@generalSum</h5>
+	}
+</div>
 
 <script>
 	let dataNames = @Html.Raw(Json.Serialize(categoriesNamesList));

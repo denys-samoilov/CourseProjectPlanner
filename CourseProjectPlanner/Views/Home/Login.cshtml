@@ -56,7 +56,6 @@
 		for (let i = 0; i < userLogins.length; i++) {
 			if (userLogins[i] === loginInput.value.trim() && userPasswords[i] === passwordInput.value.trim()) {
 				k++;
-				alert("Вхід успішний");
 				SetCookie("UserId", userIds[i], 30);
 				window.location = "Spends";
 				return;

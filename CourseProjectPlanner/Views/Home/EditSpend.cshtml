@@ -28,7 +28,6 @@
 
 <div id="myModal" class="modal">
 
-	<!-- Modal content -->
 	<div class="modal-content center-element">
 		<div>
 			<span class="close" id="closeButton">&times;</span>
@@ -61,7 +60,7 @@
 					<input asp-for="Price" class="form-control" id="priceInput" />
 					<span asp-validation-for="Price" class="text-danger"></span>
 					<p></p>
-					<label asp-for="CategoryId" class="control-label"></label>
+					<label asp-for="CategoryId" class="control-label">Категорія</label>
 					<select asp-for="CategoryId" class="form-control" id="categoryInput">
 						@foreach (var category in categoriesList)
 						{
@@ -71,7 +70,7 @@
 
 					<span asp-validation-for="CategoryId" class="text-danger"></span>
 					<p></p>
-					<label asp-for="Description" class="control-label"></label>
+					<label asp-for="Description" class="control-label">Опис</label>
 					<textarea asp-for="Description" id="descriptionInput" class="form-control"></textarea>
 					<span asp-validation-for="Description" class="text-danger"></span>
 
