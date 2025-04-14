@@ -151,7 +151,7 @@ namespace CourseProjectPlanner.Controllers
                 return RedirectToAction("Login");
             }
 
-            var categories = _Category.GetCategories;
+            var categories = _Category.GetCategories.Where(s => s.RefersTo == "Spends");
 			ViewBag.CategoriesList = categories.ToList();
 
             GetUserIdFromCookies();

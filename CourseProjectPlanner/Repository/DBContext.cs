@@ -10,6 +10,7 @@ namespace ASP_Core_EF.Repository
 
         public DbSet<Spend> Spends { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Category> Categories { get; set; }
-    }
+		public DbSet<Category> Categories { get; set; }
+		public DbSet<Category> Savings { get; set; }
+	}
 }

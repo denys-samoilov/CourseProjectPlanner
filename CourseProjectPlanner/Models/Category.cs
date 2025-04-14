@@ -6,7 +6,8 @@ namespace CourseProjectPlanner.Models
     {
         [Key]
         public int CategoryId { get; set; }
-        public string Name { get; set; }
-        public string ImageName { get; set; }
+		public string Name { get; set; }
+		public string RefersTo { get; set; }
+		public string ImageName { get; set; }
     }
 }
