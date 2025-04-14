@@ -16,6 +16,7 @@ builder.Services.AddDbContext<DBContext>(options =>
 builder.Services.AddTransient<ISpend, SpendRepository>();
 builder.Services.AddTransient<ICategory, CategoryRepository>();
 builder.Services.AddTransient<IUser, UserRepository>();
+builder.Services.AddTransient<ISaving, SavingRepository>();
 
 var app = builder.Build();
 
