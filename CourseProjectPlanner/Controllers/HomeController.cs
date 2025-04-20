@@ -326,8 +326,30 @@ namespace CourseProjectPlanner.Controllers
 			return RedirectToAction("Spends");
 		}
 
+		[HttpGet]
+		public IActionResult RemoveSaving(int id)
+		{
+			if (GetUserIdFromCookies() == 0)
+			{
+				return RedirectToAction("Login");
+			}
+			if (_Saving.GetSaving(id).UserId != GetUserIdFromCookies())
+			{
+				return RedirectToAction("Savings");
+			}
+			var model = _Saving.GetSaving(id);
+			return View(model);
+		}
 
-		
+		[HttpPost]
+		public IActionResult RemoveSaving(Saving model)
+		{
+			_Saving.Remove(model.SavingId);
+			return RedirectToAction("Savings");
+		}
+
+
+
 	}
     
 }

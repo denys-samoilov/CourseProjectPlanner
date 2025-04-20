@@ -49,7 +49,7 @@
 
 
 
-			<form asp-action="EditSpend">
+			<form asp-action="EditSaving">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 				<input type="hidden" asp-for="SavingId" />
 				<div>
@@ -76,7 +76,7 @@
 					<input type="submit" value="Зберегти зміни" class=" green-button" />
 				</p>
 				<p class="text-center">
-					<a type="button" asp-controller="Home" asp-action="RemoveSpend" asp-route-id="@Model.SavingId" class="red-button">Видалити витрату</a>
+					<a type="button" asp-controller="Home" asp-action="RemoveSaving" asp-route-id="@Model.SavingId" class="red-button">Видалити витрату</a>
 				</p>
 				<div style="display: none">
 				</div>

@@ -1,0 +1,57 @@
+﻿@model CourseProjectPlanner.Models.Saving
+
+@{
+	ViewData["Title"] = "Видалити накопичення";
+}
+<link rel="stylesheet" href="~/css/modal.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
+
+
+<div id="myModal" class="modal">
+
+	<div class="modal-content center-element">
+		<div>
+			<span class="close" id="closeButton">&times;</span>
+		</div>
+		<div class="d-flex">
+			<h3 class="text-center">Ви впевнені, що хочете видалити накопичення?</h3>
+
+		</div>
+		<div class="center-element">
+			<form asp-action="RemoveSaving">
+				<input type="hidden" asp-for="SavingId" />
+				<input type="submit" value="Так" class="green-button" style="float: right" />
+				<a type="button" asp-controller="Home" asp-action="Savings" class="red-button" style="float: right">Ні</a>
+			</form>
+		</div>
+	</div>
+
+
+
+</div>
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+
+<script>
+	let modal = document.getElementById("myModal");
+
+
+	let close = document.getElementById("closeButton");
+
+
+
+	modal.style.display = "block";
+
+
+	close.onclick = function () {
+		window.history.go(-1);
+
+	}
+
+</script>
