@@ -1,7 +1,8 @@
-﻿@model CourseProjectPlanner.Models.Spend
+﻿@model CourseProjectPlanner.Models.Saving
+
 
 @{
-	ViewData["Title"] = "EditSpend";
+	ViewData["Title"] = "EditSaving";
 	List<Category> categoriesList = ViewBag.CategoriesList;
 	List<string> imageNameCategoriesList = new List<string>();
 
@@ -50,7 +51,7 @@
 
 			<form asp-action="EditSpend">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-				<input type="hidden" asp-for="SpendId" />
+				<input type="hidden" asp-for="SavingId" />
 				<div>
 					<label asp-for="Price" class="control-label">Ціна</label>
 					<input asp-for="Price" class="form-control" id="priceInput" />
@@ -75,7 +76,7 @@
 					<input type="submit" value="Зберегти зміни" class=" green-button" />
 				</p>
 				<p class="text-center">
-					<a type="button" asp-controller="Home" asp-action="RemoveSpend" asp-route-id="@Model.SpendId" class="red-button">Видалити витрату</a>
+					<a type="button" asp-controller="Home" asp-action="RemoveSpend" asp-route-id="@Model.SavingId" class="red-button">Видалити витрату</a>
 				</p>
 				<div style="display: none">
 				</div>
@@ -83,8 +84,8 @@
 				<input asp-for="UserId" class="form-control" value=@userId style="display:none" />
 				<span asp-validation-for="UserId" class="text-danger"></span>
 
-				<input asp-for="SpendDate" class="form-control" style="display: none" value="@DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd")" />
-				<span asp-validation-for="SpendDate" class="text-danger"></span>
+				<input asp-for="SavingDate" class="form-control" style="display: none" value="@DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd")" />
+				<span asp-validation-for="SavingDate" class="text-danger"></span>
 
 			</form>
 		</div>

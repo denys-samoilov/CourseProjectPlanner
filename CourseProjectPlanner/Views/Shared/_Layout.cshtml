@@ -29,12 +29,34 @@
                                 Статистика
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Statistics" asp-route-months="1">За 1 місяць</a></li>
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Statistics" asp-route-months="3">За 3 місяці</a></li>
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Statistics" asp-route-months="6">За 6 місяців</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="StatisticsSpends" asp-route-months="1">За 1 місяць</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="StatisticsSpends" asp-route-months="3">За 3 місяці</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="StatisticsSpends" asp-route-months="6">За 6 місяців</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="StatisticsSpends" asp-route-months="12">За 12 місяців</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <div class="vr mx-2 bg-white" style="height: 40px; width: 1px;"></div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Savings">Накопичення</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Статистика
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="StatisticsSavings" asp-route-months="1">За 1 місяць</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="StatisticsSavings" asp-route-months="3">За 3 місяці</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="StatisticsSavings" asp-route-months="6">За 6 місяців</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="StatisticsSavings" asp-route-months="12">За 12 місяців</a></li>
                             </ul>
                         </li>
                     </ul>
+
+
 
                     <li class="nav-item dropdown">
                         <a class="nav-link text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">

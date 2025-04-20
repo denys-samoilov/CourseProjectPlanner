@@ -11,16 +11,18 @@ namespace CourseProjectPlanner.Controllers
 		private readonly ILogger<HomeController> _logger;
 		private readonly IUser _User;
 		private readonly ISpend _Spend;
+		private readonly ISaving _Saving;
 		private readonly ICategory _Category;
 
         
 
-		public HomeController(ILogger<HomeController> logger, IUser user, ICategory category, ISpend spend)
+		public HomeController(ILogger<HomeController> logger, IUser user, ICategory category, ISpend spend, ISaving saving)
 		{
             _logger = logger;
 			_User = user;
 			_Category = category;
 			_Spend = spend;
+			_Saving = saving;
 		}
         public int GetUserIdFromCookies()
         {
@@ -63,10 +65,7 @@ namespace CourseProjectPlanner.Controllers
                 return RedirectToAction("Login");
             }
 
-            var users = _User.GetUsers;
-			ViewBag.UsersList = users.ToList();
-
-			var categories = _Category.GetCategories;
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Spends");
 			ViewBag.CategoriesList = categories.ToList();
 
             int userId = GetUserIdFromCookies();
@@ -75,7 +74,26 @@ namespace CourseProjectPlanner.Controllers
             return View(_Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId));
 		}
 
-		public IActionResult Statistics(int months)
+		public IActionResult Savings()
+		{
+			if (GetUserIdFromCookies() == 0)
+			{
+				return RedirectToAction("Login");
+			}
+
+			var users = _User.GetUsers;
+			ViewBag.UsersList = users.ToList();
+
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
+			ViewBag.CategoriesList = categories.ToList();
+
+			int userId = GetUserIdFromCookies();
+
+
+			return View(_Saving.GetSavings.OrderByDescending(s => s.SavingId).Where(s => s.UserId == userId));
+		}
+
+		public IActionResult StatisticsSpends(int months)
 		{
 			if (GetUserIdFromCookies() == 0)
 			{
@@ -94,12 +112,37 @@ namespace CourseProjectPlanner.Controllers
 					default:
 						{ ViewBag.Months = $"останні {months} місяців"; break; }
 				}
-				var categories = _Category.GetCategories;
-				ViewBag.CategoriesList = categories.ToList();
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Spends");
+			ViewBag.CategoriesList = categories.ToList();
 				int userId = GetUserIdFromCookies();
 				DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
 				return View(_Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo));
-			
+		}
+
+		public IActionResult StatisticsSavings(int months)
+		{
+			if (GetUserIdFromCookies() == 0)
+			{
+				return RedirectToAction("Login");
+			}
+
+			switch (months)
+			{
+				case 1:
+					{ ViewBag.Months = $"останній {months} місяць"; break; }
+
+				case 2:
+				case 3:
+				case 4:
+					{ ViewBag.Months = $"останні {months} місяці"; break; }
+				default:
+					{ ViewBag.Months = $"останні {months} місяців"; break; }
+			}
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
+			ViewBag.CategoriesList = categories.ToList();
+			int userId = GetUserIdFromCookies();
+			DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
+			return View(_Saving.GetSavings.Where(s => s.UserId == userId && s.SavingDate >= selectedMonthsAgo));
 		}
 
 
@@ -172,6 +215,34 @@ namespace CourseProjectPlanner.Controllers
 		}
 
 		[HttpGet]
+		public IActionResult AddSaving()
+		{
+			if (GetUserIdFromCookies() == 0)
+			{
+				return RedirectToAction("Login");
+			}
+
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
+			ViewBag.CategoriesList = categories.ToList();
+
+			GetUserIdFromCookies();
+
+			return View();
+		}
+
+		[HttpPost]
+		public IActionResult AddSaving(Saving model)
+		{
+			if (ModelState.IsValid)
+			{
+				_Saving.Add(model);
+				return RedirectToAction("Savings");
+
+			}
+			return View(model);
+		}
+
+		[HttpGet]
 		public IActionResult EditSpend(int id)
 		{
             if (GetUserIdFromCookies() == 0)
@@ -179,7 +250,7 @@ namespace CourseProjectPlanner.Controllers
                 return RedirectToAction("Login");
             }
 
-            var categories = _Category.GetCategories;
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Spends");
 			ViewBag.CategoriesList = categories.ToList();
 
 			if(_Spend.GetSpend(id).UserId != GetUserIdFromCookies())
@@ -198,6 +269,37 @@ namespace CourseProjectPlanner.Controllers
 			{
 				_Spend.Edit(model);
 				return RedirectToAction("Spends");
+			}
+			return View(model);
+		}
+
+		[HttpGet]
+		public IActionResult EditSaving(int id)
+		{
+			if (GetUserIdFromCookies() == 0)
+			{
+				return RedirectToAction("Login");
+			}
+
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
+			ViewBag.CategoriesList = categories.ToList();
+
+			if (_Saving.GetSaving(id).UserId != GetUserIdFromCookies())
+			{
+				return RedirectToAction("Savings");
+			}
+
+			var model = _Saving.GetSaving(id);
+			return View(model);
+		}
+
+		[HttpPost]
+		public IActionResult EditSaving(Saving model)
+		{
+			if (ModelState.IsValid)
+			{
+				_Saving.Edit(model);
+				return RedirectToAction("Savings");
 			}
 			return View(model);
 		}

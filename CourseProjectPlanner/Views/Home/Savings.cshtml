@@ -1,0 +1,67 @@
+﻿
+@model IEnumerable<CourseProjectPlanner.Models.Saving>
+
+@{
+	ViewData["Title"] = "Накопичення";
+	List<Category> categoriesList = ViewBag.CategoriesList;
+}
+
+
+
+<div class="text-center">
+<a type="button" style="width: 80%" class="text-center green-button center-element" asp-controller="Home" asp-action="AddSaving">Додати новий запис</a>
+</div>
+<link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
+
+@{
+	int counter = 0;
+}
+
+@{
+	foreach (var item in Model)
+	{
+		string categoryImage = "";
+		string categoryName = "";
+        decimal spendPrice;
+        string spendDate;
+		if(categoriesList.Any(c => c.CategoryId == item.CategoryId))
+		{
+			categoryImage = $"/images/{categoriesList.First(c => c.CategoryId == item.CategoryId).ImageName}";
+			categoryName = categoriesList.First(c => c.CategoryId == item.CategoryId).Name;
+		}
+
+		spendPrice = item.Price;
+		spendDate = item.SavingDate.ToString("dd/MM/yyyy");
+
+		if (counter % 4 == 0)
+		{
+			@:<div class="d-flex center-element" style="max-width: 70%">
+		}
+		
+		<div class="card col-md-3 col-10 mt-5">
+			<img class='mx-auto img-thumbnail'
+				 src=@categoryImage
+				 width="100px" />
+			<div class="card-body text-center mx-auto">
+				<div class='cvp'>
+					<h5 class="card-title font-weight-bold">@categoryName</h5>
+					<p class="card-text">₴@spendPrice</p>
+					<p>@spendDate</p>
+					<a class="btn details px-auto"asp-action="EditSaving" asp-route-id="@item.SavingId">Деталі</a><br />
+				</div>
+			</div>
+		</div>
+		counter++;
+		
+		if (counter % 4 == 0)
+		{
+			@:</div>
+		}
+	}
+	
+	@:</div>
+
+}
+
+
+

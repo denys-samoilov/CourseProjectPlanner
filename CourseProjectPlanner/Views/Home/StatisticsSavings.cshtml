@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CourseProjectPlanner.Models.Saving>
+
+@{
+	ViewData["Title"] = "Статистика";
+	List<Category> categoriesList = ViewBag.CategoriesList;
+}
+<div class="text-center">
+	<h2>Статистика за @ViewBag.Months</h2>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+@{
+	List<decimal> savingPricesList = new List<decimal>();
+	List<string> categoriesNamesList = new List<string>();
+	List<string> categoriesFilesList = new List<string>();
+	foreach (var category in categoriesList)
+	{
+		decimal categorySpendSum = 0;
+		foreach (var spend in Model)
+		{
+			if (category.CategoryId == spend.CategoryId)
+			{
+				categorySpendSum += spend.Price;
+			}
+		}
+		if (categorySpendSum > 0)
+		{
+			categoriesNamesList.Add(category.Name);
+			categoriesFilesList.Add($"/images/{category.ImageName}");
+			savingPricesList.Add(categorySpendSum);
+		}
+	}
+
+}
+
+<div id="barStatistics" class="center-element text-center"></div>
+
+<div class="text-center">
+	@{
+
+		decimal generalSum = 0;
+		for (int i = 0; i < categoriesNamesList.Count(); i++)
+		{
+			generalSum += savingPricesList[i];
+		}
+		<h5>Накопичено усього: ₴@generalSum</h5>
+	}
+</div>
+
+<script>
+	let dataNames = @Html.Raw(Json.Serialize(categoriesNamesList));
+	let dataPrices = @Html.Raw(Json.Serialize(savingPricesList));
+
+	let data = [
+		{
+			labels: dataNames,
+			values: dataPrices,
+			type: 'pie'
+		}
+	];
+
+
+	let layout = {
+
+		height: 400,
+
+		width: 500
+
+	};
+	Plotly.newPlot('barStatistics', data);
+</script>
