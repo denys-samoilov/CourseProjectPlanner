@@ -3,6 +3,7 @@
 @{
 	ViewData["Title"] = "Статистика";
 	List<Category> categoriesList = ViewBag.CategoriesList;
+	List<Spend> spendsList = ViewBag.SpendsList;
 }
 <div class="text-center">
 	<h2>Статистика за @ViewBag.Months</h2>
@@ -12,23 +13,24 @@
 
 @{
 	List<decimal> savingPricesList = new List<decimal>();
-	List<string> categoriesNamesList = new List<string>();
+	List<string> savingCategoriesNamesList = new List<string>();
 	List<string> categoriesFilesList = new List<string>();
 	foreach (var category in categoriesList)
 	{
-		decimal categorySpendSum = 0;
-		foreach (var spend in Model)
+		decimal categorySavingSum = 0;
+		foreach (var saving in Model)
 		{
-			if (category.CategoryId == spend.CategoryId)
+			if (category.CategoryId == saving.CategoryId)
 			{
-				categorySpendSum += spend.Price;
+				categorySavingSum += saving.Price;
 			}
 		}
-		if (categorySpendSum > 0)
+		
+		if (categorySavingSum > 0)
 		{
-			categoriesNamesList.Add(category.Name);
+			savingCategoriesNamesList.Add(category.Name);
 			categoriesFilesList.Add($"/images/{category.ImageName}");
-			savingPricesList.Add(categorySpendSum);
+			savingPricesList.Add(categorySavingSum);
 		}
 	}
 
@@ -39,17 +41,39 @@
 <div class="text-center">
 	@{
 
-		decimal generalSum = 0;
-		for (int i = 0; i < categoriesNamesList.Count(); i++)
+		decimal generalSavingSum = 0;
+		decimal generalSpendSum = 0;
+		decimal differenceInPrices = 0;
+
+		string differenceInPricesText;
+
+		for (int i = 0; i < savingCategoriesNamesList.Count(); i++)
 		{
-			generalSum += savingPricesList[i];
+			generalSavingSum += savingPricesList[i];
 		}
-		<h5>Накопичено усього: ₴@generalSum</h5>
+
+		foreach(var spend in spendsList)
+		{
+			generalSpendSum += spend.Price;
+		}
+
+		differenceInPrices = generalSavingSum - generalSpendSum;
+
+		if (differenceInPrices < 0) differenceInPricesText = "Ви вийшли в мінус на ₴";
+		else if (differenceInPrices > 0) differenceInPricesText = "Ви вийшли в плюс на ₴";
+		else differenceInPricesText = "Ви вийшли рівно в нуль";
+
+		<h5>Накопичено усього: ₴@generalSavingSum</h5>
+
+		<h5>@differenceInPricesText@differenceInPrices</h5>
+
+
+
 	}
 </div>
 
 <script>
-	let dataNames = @Html.Raw(Json.Serialize(categoriesNamesList));
+	let dataNames = @Html.Raw(Json.Serialize(savingCategoriesNamesList));
 	let dataPrices = @Html.Raw(Json.Serialize(savingPricesList));
 
 	let data = [

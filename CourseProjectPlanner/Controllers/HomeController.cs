@@ -116,7 +116,10 @@ namespace CourseProjectPlanner.Controllers
 			ViewBag.CategoriesList = categories.ToList();
 				int userId = GetUserIdFromCookies();
 				DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
-				return View(_Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo));
+
+			var savings = _Saving.GetSavings.Where(s => s.UserId == userId && s.SavingDate >= selectedMonthsAgo);
+			ViewBag.SavingsList = savings.ToList();
+			return View(_Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo));
 		}
 
 		public IActionResult StatisticsSavings(int months)
@@ -140,8 +143,13 @@ namespace CourseProjectPlanner.Controllers
 			}
 			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
 			ViewBag.CategoriesList = categories.ToList();
+
 			int userId = GetUserIdFromCookies();
 			DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
+
+			var spends = _Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo);
+			ViewBag.SpendsList = spends.ToList();
+
 			return View(_Saving.GetSavings.Where(s => s.UserId == userId && s.SavingDate >= selectedMonthsAgo));
 		}
 

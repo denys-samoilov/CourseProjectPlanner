@@ -3,6 +3,7 @@
 @{
 	ViewData["Title"] = "Статистика";
 	List<Category> categoriesList = ViewBag.CategoriesList;
+	List<Saving> savingsList = ViewBag.SavingsList;
 }
 <div class="text-center">
 	<h2>Статистика за @ViewBag.Months</h2>
@@ -39,12 +40,31 @@
 <div class="text-center">
 	@{
 
-		decimal generalSum = 0;
+		decimal generalSpendSum = 0;
+		decimal generalSavingSum = 0;
+		decimal differenceInPrices = 0;
+
+		string differenceInPricesText;
+
 		for (int i = 0; i < categoriesNamesList.Count(); i++)
 		{
-			generalSum += spendPricesList[i];
+			generalSpendSum += spendPricesList[i];
 		}
-		<h5>Витрачено усього: ₴@generalSum</h5>
+
+		foreach(var saving in savingsList)
+		{
+			generalSavingSum += saving.Price;
+		}
+
+		differenceInPrices = generalSavingSum - generalSpendSum;
+
+		if (differenceInPrices < 0) differenceInPricesText = "Ви вийшли в мінус на ₴";
+		else if (differenceInPrices > 0) differenceInPricesText = "Ви вийшли в плюс на ₴";
+		else differenceInPricesText = "Ви вийшли рівно в нуль";
+
+		<h5>Витрачено усього: ₴@generalSpendSum</h5>
+
+		<h5>@differenceInPricesText@differenceInPrices</h5>
 	}
 </div>
 
