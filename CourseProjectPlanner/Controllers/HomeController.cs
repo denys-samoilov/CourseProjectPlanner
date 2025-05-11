@@ -356,6 +356,11 @@ namespace CourseProjectPlanner.Controllers
 			return RedirectToAction("Savings");
 		}
 
+		public IActionResult ExchangeRate()
+		{
+			return View();
+		}
+
 
 
 	}

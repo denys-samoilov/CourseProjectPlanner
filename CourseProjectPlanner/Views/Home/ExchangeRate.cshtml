@@ -1,0 +1,66 @@
+﻿@{
+	ViewData["Title"] = "Конвертор";
+}
+
+<p>
+	Перевести з:
+	<select id="valueFrom">
+		<option value="UAH">Гривень</option>
+		<option value="USD">Доларів США</option>
+		<option value="EUR">Євро</option>
+	</select>
+</p>
+
+<label for="priceFrom">Ціна обміну: </label>
+<input type="text" id="priceFrom" />
+
+<p>
+	Перевести в:
+	<select id="valueTo">
+		<option value="UAH">Гривень</option>
+		<option value="USD">Доларів США</option>
+		<option value="EUR">Євро</option>
+	</select>
+</p>
+
+<button class="green-button" onclick="convertCurrency()">Конвертувати</button>
+<br />
+
+<label for="priceAfter">Результат:</label>
+<input type="text" id="priceAfter" readonly />
+
+<script>
+	async function convertCurrency() {
+		const apiKey = "059d6f582a06a2e68da19dea"; // твій API ключ
+		const from = document.getElementById("valueFrom").value;
+		const to = document.getElementById("valueTo").value;
+		const amount = parseFloat(document.getElementById("priceFrom").value);
+
+		if (isNaN(amount)) {
+			alert("Введіть коректну суму");
+			return;
+		}
+
+		if (from === to) {
+			document.getElementById("priceAfter").value = amount.toFixed(2);
+			return;
+		}
+
+		try {
+			const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${from}`;
+			const response = await fetch(url);
+			const data = await response.json();
+
+			if (data.result !== "success") {
+				throw new Error("Помилка отримання курсу");
+			}
+
+			const rate = data.conversion_rates[to];
+			const result = amount * rate;
+			document.getElementById("priceAfter").value = result.toFixed(2);
+		} catch (error) {
+			console.error(error);
+			alert("Не вдалося отримати курс валют.");
+		}
+	}
+</script>
