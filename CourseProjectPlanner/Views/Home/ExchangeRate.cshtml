@@ -2,34 +2,67 @@
 	ViewData["Title"] = "Конвертор";
 }
 
-<p>
-	Перевести з:
-	<select id="valueFrom">
-		<option value="UAH">Гривень</option>
-		<option value="USD">Доларів США</option>
-		<option value="EUR">Євро</option>
-	</select>
-</p>
+<link rel="stylesheet" href="~/css/modal.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
 
-<label for="priceFrom">Ціна обміну: </label>
-<input type="text" id="priceFrom" />
+<div id="myModal" class="modal">
+	<div class="modal-content center-element">
+		<div>
+			<span class="close" id="closeButton">&times;</span>
+			<h5 class="text-center">Конвертор валют</h5>
+		</div>
+		<p>
+			Перевести з:
+			<select id="valueFrom" class="form-control">
+				<option value="UAH">Гривень</option>
+				<option value="USD">Доларів США</option>
+				<option value="EUR">Євро</option>
+				<option value="GBP">Фунтів Стерлінга</option>
+				<option value="PLN">Польських злотів</option>
+				<option value="CAD">Канадських доларів</option>
+			</select>
+			<br>
+		<label for="priceFrom">Ціна обміну: </label>
+		<input type="text" class="form-control" id="priceFrom" />
+		</p>
 
-<p>
-	Перевести в:
-	<select id="valueTo">
-		<option value="UAH">Гривень</option>
-		<option value="USD">Доларів США</option>
-		<option value="EUR">Євро</option>
-	</select>
-</p>
+		<br>
+		<p>
+			Перевести в:
+			<select id="valueTo" class="form-control">
+				<option value="UAH">Гривні</option>
+				<option value="USD">Долари США</option>
+				<option value="EUR">Євро</option>
+				<option value="GBP">Фунт Стерлінга</option>
+				<option value="PLN">Польські злоті</option>
+				<option value="CAD">Канадські Долари</option>
+			</select>
+		</p>
 
-<button class="green-button" onclick="convertCurrency()">Конвертувати</button>
-<br />
+		<button class="green-button" onclick="convertCurrency()">Конвертувати</button>
+		<br />
 
-<label for="priceAfter">Результат:</label>
-<input type="text" id="priceAfter" readonly />
+		<label for="priceAfter">Результат:</label>
+		<input type="text" class="form-control" id="priceAfter"/>
+
+	</div>
+</div>
+
+
 
 <script>
+	document.addEventListener("DOMContentLoaded", function () {
+		let modal = document.getElementById("myModal");
+		let close = document.getElementById("closeButton");
+
+		modal.style.display = "block";
+
+		close.onclick = function () {
+			window.location = "Index";
+		};
+	});
+
+
 	async function convertCurrency() {
 		const apiKey = "059d6f582a06a2e68da19dea"; // твій API ключ
 		const from = document.getElementById("valueFrom").value;
