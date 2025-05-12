@@ -8,8 +8,9 @@
 		[Required(ErrorMessage = "Дане поле обов'язкове")]
 		public decimal Price { get; set; }
         public string? Description { get; set; }
+		public string Currency { get; set; }
 
-        [DataType(DataType.Date)]
+		[DataType(DataType.Date)]
         public DateTime SpendDate { get; set; }
         public int CategoryId { get; set; }
         public int UserId { get; set; }

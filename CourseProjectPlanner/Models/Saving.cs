@@ -7,6 +7,7 @@
 		[RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Дане поле має бути числом з двома десятковими знаками")]
 		[Required(ErrorMessage = "Дане поле обов'язкове")]
 		public decimal Price { get; set; }
+		public string Currency { get; set; }
 		public string? Description { get; set; }
 
 		[DataType(DataType.Date)]

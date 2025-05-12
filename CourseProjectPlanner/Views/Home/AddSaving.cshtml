@@ -52,6 +52,15 @@
 					<label asp-for="Price" class="control-label">Ціна</label>
 					<input asp-for="Price" class="form-control" id="priceInput" value="0.00" />
 					<span asp-validation-for="Price" class="text-danger"></span>
+
+					<label asp-for="Currency" class="control-label">Валюта</label>
+					<select asp-for="Currency" class="form-control" id="currencyInput">
+						<option selected="selected" value="UAH">Гривня (₴)</option>
+						<option value="USD">Долар США ($)</option>
+						<option value="EUR">Євро (€)</option>
+						<option value="GBP">Фунт Стерлінга (£)</option>
+						<option value="PLN">Польський Злотий (zł)</option>
+					</select>
 					<p></p>
 					<label asp-for="CategoryId" class="control-label">Категорія</label>
 					<select asp-for="CategoryId" class="form-control" id="categoryInput">
@@ -107,6 +116,8 @@
 	let categoryName = document.getElementById("categoryName");
 	let categoryImage = document.getElementById("categoryImage");
 
+	let currencyInput = document.getElementById("currencyInput");
+
 	let imageNameOfCategoriesList = @Html.Raw(Json.Serialize(imageNameCategoriesList));
 
 
@@ -117,7 +128,7 @@
 
 
 	priceInput.oninput = function () {
-		priceOutput.textContent = `₴${priceInput.value}`;
+		changeCurrency();
 	};
 
 	categoryInput.onchange = function () {
@@ -129,9 +140,29 @@
 
 	};
 
+	currencyInput.onchange = function () {
+		changeCurrency();
+	}
+
 	close.onclick = function () {
 		window.location = "Savings";
 
 	}
+
+	function changeCurrency() {
+		const currencySymbols = {
+			"UAH": "₴",
+			"USD": "$",
+			"EUR": "€",
+			"GBP": "£",
+			"PLN": "zł"
+		};
+
+		const selectedCurrency = currencyInput.value;
+		const symbol = currencySymbols[selectedCurrency] || "";
+
+		priceOutput.textContent = `${symbol}${priceInput.value}`;
+	}
+
 
 </script>
