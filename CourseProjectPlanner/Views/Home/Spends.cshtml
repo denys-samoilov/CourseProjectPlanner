@@ -15,6 +15,14 @@
 
 @{
 	int counter = 0;
+
+	var currencySymbols = new Dictionary<string, string> {
+		{ "UAH", "₴" },
+		{ "USD", "$" },
+		{ "EUR", "€" },
+		{ "GBP", "£" },
+		{ "PLN", "zł" }
+	};
 }
 
 @{
@@ -45,7 +53,7 @@
 			<div class="card-body text-center mx-auto">
 				<div class='cvp'>
 					<h5 class="card-title font-weight-bold">@categoryName</h5>
-					<p class="card-text">₴@spendPrice</p>
+					<p class="card-text">@currencySymbols[item.Currency]@spendPrice</p>
 					<p>@spendDate</p>
 					<a class="btn details px-auto"asp-action="EditSpend" asp-route-id="@item.SpendId">Деталі</a><br />
 				</div>
@@ -63,5 +71,8 @@
 
 }
 
+<script>
+
+</script>
 
 

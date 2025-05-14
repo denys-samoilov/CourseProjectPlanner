@@ -55,6 +55,15 @@
 					<label asp-for="Price" class="control-label">Ціна</label>
 					<input asp-for="Price" class="form-control" id="priceInput" />
 					<span asp-validation-for="Price" class="text-danger"></span>
+					<label asp-for="Currency" class="control-label">Валюта</label>
+					<select asp-for="Currency" class="form-control" id="currencyInput">
+						<option selected="selected" value="UAH">Гривня (₴)</option>
+						<option value="USD">Долар США ($)</option>
+						<option value="EUR">Євро (€)</option>
+						<option value="GBP">Фунт Стерлінга (£)</option>
+						<option value="PLN">Польський Злотий (zł)</option>
+					</select>
+					<p></p>
 					<p></p>
 					<label asp-for="CategoryId" class="control-label">Категорія</label>
 					<select asp-for="CategoryId" class="form-control" id="categoryInput">
@@ -103,40 +112,11 @@
 
 
 <script>
-	let modal = document.getElementById("myModal");
+	window.sharedData = {
+		imageNameOfCategoriesList: @Html.Raw(Json.Serialize(imageNameCategoriesList))
+				};
+</script>
 
-
-	let close = document.getElementById("closeButton");
-
-	let categoryInput = document.getElementById("categoryInput");
-	let categoryName = document.getElementById("categoryName");
-	let categoryImage = document.getElementById("categoryImage");
-
-	let imageNameOfCategoriesList = @Html.Raw(Json.Serialize(imageNameCategoriesList));
-
-
-	let priceInput = document.getElementById("priceInput");
-	let priceOutput = document.getElementById("priceOutput");
-
-	modal.style.display = "block";
-
-
-	priceInput.oninput = function () {
-		priceOutput.textContent = `₴${priceInput.value}`;
-	};
-
-	categoryInput.onchange = function () {
-		let selectedCategory = categoryInput.selectedIndex;
-		let imgFile = imageNameOfCategoriesList[selectedCategory];
-
-		categoryImage.src = `/images/${imgFile}`;
-		categoryName.textContent = categoryInput.options[categoryInput.selectedIndex].textContent;
-
-	};
-
-	close.onclick = function () {
-		window.history.go(-1);
-
-	}
+<script src="/js/Editing.js">
 
 </script>

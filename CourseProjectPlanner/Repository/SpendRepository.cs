@@ -41,7 +41,8 @@ namespace CourseProjectPlanner.Repository
             dbEntity.Price = _Spend.Price;
             dbEntity.Description= _Spend.Description;
             dbEntity.CategoryId = _Spend.CategoryId;
-            db.SaveChanges();
+			dbEntity.Currency = _Spend.Currency;
+			db.SaveChanges();
         }
     }
 }
