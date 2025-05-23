@@ -1,16 +1,12 @@
-﻿
-@model IEnumerable<CourseProjectPlanner.Models.Spend>
+﻿@model IEnumerable<CourseProjectPlanner.Models.Spend>
 
 @{
 	ViewData["Title"] = "Витрати";
 	List<Category> categoriesList = ViewBag.CategoriesList;
+	int? SelectedCategoriesId = ViewBag.SelectedCategoryId;
+	string SelectedCurrency = ViewBag.SelectedCurrency;
 }
 
-
-
-<div class="text-center">
-<a type="button" style="width: 80%" class="text-center green-button center-element" asp-controller="Home" asp-action="AddSpend">Додати новий запис</a>
-</div>
 <link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
 
 @{
@@ -25,14 +21,37 @@
 	};
 }
 
+<div class="d-flex justify-content-center mb-4" style="gap: 20px;">
+	<a type="button" style="width: 40%;" class="green-button" asp-controller="Home" asp-action="AddSpend">Додати новий запис</a>
+	<form asp-controller="Home" asp-action="FilterSpends" method="get" class="d-flex" style="gap: 10px;">
+		<select name="categoryId" id="categoryId" class="form-control" style="border-radius: 10px;">
+			<option value="">Усі категорії</option>
+			@foreach (var category in categoriesList)
+			{
+				<option value="@category.CategoryId">@category.Name</option>
+			}
+		</select>
+
+		<select name="currency" id="currency"  class="form-control" style="border-radius: 10px;">
+			<option value="">Усі валюти</option>
+			@foreach (var currency in currencySymbols.Keys)
+			{
+				<option value="@currency">@currency</option>
+			}
+		</select>
+
+		<button type="submit" class="blue-button">Фільтрувати</button>
+	</form>
+</div>
+
 @{
 	foreach (var item in Model)
 	{
 		string categoryImage = "";
 		string categoryName = "";
-        decimal spendPrice;
-        string spendDate;
-		if(categoriesList.Any(c => c.CategoryId == item.CategoryId))
+		decimal spendPrice;
+		string spendDate;
+		if (categoriesList.Any(c => c.CategoryId == item.CategoryId))
 		{
 			categoryImage = $"/images/{categoriesList.First(c => c.CategoryId == item.CategoryId).ImageName}";
 			categoryName = categoriesList.First(c => c.CategoryId == item.CategoryId).Name;
@@ -45,7 +64,7 @@
 		{
 			@:<div class="d-flex center-element" style="max-width: 70%">
 		}
-		
+
 		<div class="card col-md-3 col-10 mt-5">
 			<img class='mx-auto img-thumbnail'
 				 src=@categoryImage
@@ -55,24 +74,32 @@
 					<h5 class="card-title font-weight-bold">@categoryName</h5>
 					<p class="card-text">@currencySymbols[item.Currency]@spendPrice</p>
 					<p>@spendDate</p>
-					<a class="btn details px-auto"asp-action="EditSpend" asp-route-id="@item.SpendId">Деталі</a><br />
+					<a class="btn details px-auto" asp-action="EditSpend" asp-route-id="@item.SpendId">Деталі</a><br />
 				</div>
 			</div>
 		</div>
 		counter++;
-		
+
 		if (counter % 4 == 0)
 		{
 			@:</div>
 		}
 	}
-	
-	@:</div>
 
+	@:</div>
 }
 
 <script>
+	let categoryIdSelect = document.getElementById("categoryId");
+	let currencySelect = document.getElementById("currency");
+	let selectedCategoryId = @Html.Raw(Json.Serialize(SelectedCategoriesId));
+	let selectedCurrency = @Html.Raw(Json.Serialize(SelectedCurrency));
 
+	if (selectedCategoryId !== null && selectedCategoryId !== "") {
+		categoryIdSelect.value = selectedCategoryId;
+	}
+
+	if (selectedCurrency !== null && selectedCurrency !== "") {
+		currencySelect.value = selectedCurrency;
+	}
 </script>
-
-

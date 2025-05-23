@@ -92,3 +92,33 @@ body {
         background-color: white;
         color: #a93226;
     }
+
+
+.blue-button {
+    border-radius: 10px;
+    background-color: #152d9b;
+    border: 1px #152d9b;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 1s;
+}
+
+    .blue-button:hover {
+        background-color: white;
+        color: #152d9b;
+    }
+
+    .blue-button:disabled {
+        background-color: #808080;
+        border: 1px solid black;
+    }
+
+        .blue-button:disabled:hover {
+            background-color: white;
+            color: #808080;
+        }

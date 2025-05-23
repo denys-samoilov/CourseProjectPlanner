@@ -21,8 +21,10 @@
 				<option value="PLN">Польських злотів (zł)</option>
 			</select>
 			<br>
-		<label for="priceFrom">Ціна обміну: </label>
-		<input type="text" class="form-control" id="priceFrom" />
+			<label for="priceFrom">Ціна обміну: </label>
+			<input type="text" class="form-control" id="priceFrom" />
+			<span class="text-danger" id="ErrorSpan"></span>
+
 		</p>
 
 		<br>
@@ -41,7 +43,10 @@
 		<br />
 
 		<label for="priceAfter">Результат:</label>
-		<input type="text" class="form-control" id="priceAfter"/>
+		<input type="text" class="form-control" id="priceAfter" />
+
+		<label for="priceForOne">Ціна за одну одиницю:</label>
+		<input type="text" class="form-control" id="priceForOne" />
 
 	</div>
 </div>
@@ -49,31 +54,31 @@
 
 
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
 		let modal = document.getElementById("myModal");
 		let close = document.getElementById("closeButton");
-
 		modal.style.display = "block";
 
 		close.onclick = function () {
 			window.location = "Index";
 		};
-	});
-
 
 	async function convertCurrency() {
-		const apiKey = "059d6f582a06a2e68da19dea"; // твій API ключ
-		const from = document.getElementById("valueFrom").value;
-		const to = document.getElementById("valueTo").value;
-		const amount = parseFloat(document.getElementById("priceFrom").value);
+		let errorSpan = document.getElementById('ErrorSpan').innerHTML = "";
+		let apiKey = "059d6f582a06a2e68da19dea";
+		let from = document.getElementById("valueFrom").value;
+		let to = document.getElementById("valueTo").value;
+		let amount = parseFloat(document.getElementById("priceFrom").value);
 
 		if (isNaN(amount)) {
-			alert("Введіть коректну суму");
+			let errorSpan = document.getElementById('ErrorSpan');
+			errorSpan.innerHTML = 'Введіть конкретну суму';
 			return;
 		}
 
 		if (from === to) {
 			document.getElementById("priceAfter").value = amount.toFixed(2);
+			document.getElementById("priceForOne").value = 1;
+			priceForOne
 			return;
 		}
 
@@ -89,6 +94,7 @@
 			const rate = data.conversion_rates[to];
 			const result = amount * rate;
 			document.getElementById("priceAfter").value = result.toFixed(2);
+			document.getElementById("priceForOne").value = rate.toFixed(2);
 		} catch (error) {
 			console.error(error);
 			alert("Не вдалося отримати курс валют.");

@@ -58,7 +58,7 @@ namespace CourseProjectPlanner.Controllers
             return View();
 		}
 
-		public IActionResult Spends()
+		public IActionResult Spends(int? categoryId, string currency)
 		{
             if (GetUserIdFromCookies() == 0)
             {
@@ -68,30 +68,80 @@ namespace CourseProjectPlanner.Controllers
 			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Spends");
 			ViewBag.CategoriesList = categories.ToList();
 
-            int userId = GetUserIdFromCookies();
+			ViewBag.SelectedCategoryId = categoryId;
+			ViewBag.SelectedCurrency = currency;
+
+			int userId = GetUserIdFromCookies();
+
+			var savingsQuery = _Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId);
+
+			if (categoryId.HasValue)
+				savingsQuery = savingsQuery.Where(s => s.CategoryId == categoryId.Value);
+
+			if (!string.IsNullOrEmpty(currency))
+				savingsQuery = savingsQuery.Where(s => s.Currency == currency);
 
 
-            return View(_Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId));
+			return View(savingsQuery.ToList());
 		}
 
-		public IActionResult Savings()
+		public IActionResult FilterSpends(int? categoryId, string currency)
 		{
 			if (GetUserIdFromCookies() == 0)
 			{
 				return RedirectToAction("Login");
 			}
 
-			var users = _User.GetUsers;
-			ViewBag.UsersList = users.ToList();
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Spends");
+			ViewBag.CategoriesList = categories.ToList();
+
+			int userId = GetUserIdFromCookies();
+
+			return RedirectToAction("Spends", new { categoryId = categoryId, currency = currency });
+		}
+
+		public IActionResult Savings(int? categoryId, string currency)
+		{
+			if (GetUserIdFromCookies() == 0)
+			{
+				return RedirectToAction("Login");
+			}
+
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
+			ViewBag.CategoriesList = categories.ToList();
+
+			ViewBag.SelectedCategoryId = categoryId;
+			ViewBag.SelectedCurrency = currency;
+
+			int userId = GetUserIdFromCookies();
+
+			var savingsQuery = _Saving.GetSavings.OrderByDescending(s => s.SavingId).Where(s => s.UserId == userId);
+
+			if (categoryId.HasValue)
+				savingsQuery = savingsQuery.Where(s => s.CategoryId == categoryId.Value);
+
+			if (!string.IsNullOrEmpty(currency))
+				savingsQuery = savingsQuery.Where(s => s.Currency == currency);
+
+
+			return View(savingsQuery.ToList());
+		}
+
+		public IActionResult FilterSavings(int? categoryId, string currency)
+		{
+			if (GetUserIdFromCookies() == 0)
+			{
+				return RedirectToAction("Login");
+			}
 
 			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
 			ViewBag.CategoriesList = categories.ToList();
 
 			int userId = GetUserIdFromCookies();
 
-
-			return View(_Saving.GetSavings.OrderByDescending(s => s.SavingId).Where(s => s.UserId == userId));
+			return RedirectToAction("Savings", new { categoryId = categoryId, currency = currency });
 		}
+
 
 		public IActionResult StatisticsSpends(int months)
 		{
