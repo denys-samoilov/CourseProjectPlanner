@@ -60,6 +60,7 @@
 						<option value="EUR">Євро (€)</option>
 						<option value="GBP">Фунт Стерлінга (£)</option>
 						<option value="PLN">Польський Злотий (zł)</option>
+						<option value="CZK">Чеська крона (Kč)</option>
 					</select>
 					<p></p>
 					<label asp-for="CategoryId" class="control-label">Категорія</label>
@@ -152,7 +153,8 @@
 			"USD": "$",
 			"EUR": "€",
 			"GBP": "£",
-			"PLN": "zł"
+			"PLN": "zł",
+			"CZK": "Kč"
 		};
 
 		const selectedCurrency = currencyInput.value;
