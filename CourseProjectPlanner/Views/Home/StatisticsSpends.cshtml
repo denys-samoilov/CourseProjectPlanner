@@ -16,12 +16,15 @@
 }
 <div class="text-center">
 	<h2>Статистика за @ViewBag.Months</h2><br>
-	<select id="currency" class="form-control" onchange="submitFilters()">
-		@foreach (var currencySymbol in currencySymbols.Keys)
-		{
-			<option value="@currencySymbol">@currencySymbol</option>
-		}
-	</select>
+	<div class="d-flex justify-content-center align-items-center gap-2 my-3">
+		<label for="currency" class="form-label mb-0 fw-bold">Валюта:</label>
+		<select id="currency" class="form-select w-auto text-center" onchange="submitFilters()">
+			@foreach (var currencySymbol in currencySymbols.Keys)
+			{
+				<option value="@currencySymbol">@currencySymbol</option>
+			}
+		</select>
+	</div>
 </div>
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -73,13 +76,24 @@
 
 		differenceInPrices = generalSavingSum - generalSpendSum;
 
-		if (differenceInPrices < 0) differenceInPricesText = "Ви вийшли в мінус на ₴";
-		else if (differenceInPrices > 0) differenceInPricesText = "Ви вийшли в плюс на ₴";
-		else differenceInPricesText = "Ви вийшли рівно в нуль";
-
 		<h5>Витрачено усього: ₴@generalSpendSum</h5>
 
-		<h5>@differenceInPricesText@differenceInPrices</h5>
+		if (differenceInPrices < 0)
+		{
+			differenceInPricesText = "Ви вийшли в мінус на ";
+			<h5>@differenceInPricesText@differenceInPrices</h5>
+		}
+		else if (differenceInPrices > 0)
+		{
+			differenceInPricesText = "Ви вийшли в плюс на ";
+			<h5>@differenceInPricesText@differenceInPrices</h5>
+		}
+		else
+		{
+			differenceInPricesText = "Ви вийшли рівно в нуль";
+			<h5>@differenceInPricesText</h5>
+		}
+
 	}
 </div>
 

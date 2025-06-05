@@ -17,12 +17,15 @@
 }
 <div class="text-center">
 	<h2>Статистика за @ViewBag.Months</h2><br>
-	<select id="currency">
-		@foreach (var currencySymbol in currencySymbols.Keys)
-		{
-			<option value="@currencySymbol">@currencySymbol</option>
-		}
-	</select>
+	<div class="d-flex justify-content-center align-items-center gap-2 my-3">
+		<label for="currency" class="form-label mb-0 fw-bold">Валюта:</label>
+		<select id="currency" class="form-select w-auto text-center" onchange="submitFilters()">
+			@foreach (var currencySymbol in currencySymbols.Keys)
+			{
+				<option value="@currencySymbol">@currencySymbol</option>
+			}
+		</select>
+	</div>
 </div>
 
 
@@ -77,22 +80,45 @@
 
 		differenceInPrices = generalSavingSum - generalSpendSum;
 
-		if (differenceInPrices < 0) differenceInPricesText = "Ви вийшли в мінус на ₴";
-		else if (differenceInPrices > 0) differenceInPricesText = "Ви вийшли в плюс на ₴";
-		else differenceInPricesText = "Ви вийшли рівно в нуль";
+		<h5>Накопичено усього: @generalSavingSum</h5>
 
-		<h5>Накопичено усього: ₴@generalSavingSum</h5>
-
-		<h5>@differenceInPricesText@differenceInPrices</h5>
-
+		if (differenceInPrices < 0)
+		{
+			differenceInPricesText = "Ви вийшли в мінус на ";
+			<h5>@differenceInPricesText@differenceInPrices</h5>
+		}
+		else if (differenceInPrices > 0)
+		{
+			differenceInPricesText = "Ви вийшли в плюс на ";
+			<h5>@differenceInPricesText@differenceInPrices</h5>
+		}
+		else
+		{
+			differenceInPricesText = "Ви вийшли рівно в нуль";
+			<h5>@differenceInPricesText</h5>
+		}
 
 
 	}
 </div>
 
 <script>
+	let currencySelect = document.getElementById("currency");
+	let selectedCurrency = @Html.Raw(Json.Serialize(ViewBag.SelectedCurrency));
+
+	for (let i = 0; i < currencySelect.options.length; i++) {
+		if (currencySelect.options[i].value === selectedCurrency) {
+			currencySelect.selectedIndex = i;
+			break;
+		}
+	}
+
+
 	function submitFilters() {
 		let currency = document.getElementById("currency").value;
+		let months = @Html.Raw(Json.Serialize(ViewBag.Months));
+
+		months = months.replace(/\D/g, "");
 
 		let params = new URLSearchParams();
 
@@ -100,7 +126,9 @@
 			params.append('currency', currency);
 		}
 
-		window.location.href = `/Home/StatisticsSpends?${params.toString()}`;
+		params.append('months', months)
+
+		window.location.href = `/Home/StatisticsSavings?${params.toString()}`;
 	}
 
 

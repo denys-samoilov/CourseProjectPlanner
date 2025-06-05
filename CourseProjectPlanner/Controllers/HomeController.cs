@@ -207,7 +207,7 @@ namespace CourseProjectPlanner.Controllers
 			return View(spendsQuery);
 		}
 
-		public IActionResult StatisticsSavings(int months)
+		public IActionResult StatisticsSavings(int months, string currency)
 		{
 			if (GetUserIdFromCookies() == 0)
 			{
@@ -228,14 +228,30 @@ namespace CourseProjectPlanner.Controllers
 			}
 			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
 			ViewBag.CategoriesList = categories.ToList();
+			ViewBag.SelectedCurrency = currency;
 
 			int userId = GetUserIdFromCookies();
 			DateTime selectedMonthsAgo = DateTime.Now.AddMonths(-months);
 
+			var savingsQuery = _Saving.GetSavings.Where(s => s.UserId == userId);
+			savingsQuery = savingsQuery.Where(s => s.SavingDate >= selectedMonthsAgo);
+
+			if (!string.IsNullOrWhiteSpace(currency))
+			{
+				savingsQuery = savingsQuery.Where(s => s.Currency == currency);
+			}
+			else savingsQuery = savingsQuery.Where(s => s.Currency == "UAH");
+
 			var spends = _Spend.GetSpends.Where(s => s.UserId == userId && s.SpendDate >= selectedMonthsAgo);
+			if (!string.IsNullOrWhiteSpace(currency))
+			{
+				spends = spends.Where(s => s.Currency == currency);
+			}
+			else spends = spends.Where(s => s.Currency == "UAH");
+
 			ViewBag.SpendsList = spends.ToList();
 
-			return View(_Saving.GetSavings.Where(s => s.UserId == userId && s.SavingDate >= selectedMonthsAgo));
+			return View(savingsQuery);
 		}
 
 
