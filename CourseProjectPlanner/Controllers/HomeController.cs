@@ -3,6 +3,7 @@ using CourseProjectPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+using System.Linq;
 
 namespace CourseProjectPlanner.Controllers
 {
@@ -58,7 +59,7 @@ namespace CourseProjectPlanner.Controllers
             return View();
 		}
 
-		public IActionResult Spends(int? categoryId, string currency)
+		public IActionResult Spends(List<int> categoryIds, List<string> currencies, string description)
 		{
             if (GetUserIdFromCookies() == 0)
             {
@@ -67,37 +68,41 @@ namespace CourseProjectPlanner.Controllers
 
 			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Spends");
 			ViewBag.CategoriesList = categories.ToList();
-
-			ViewBag.SelectedCategoryId = categoryId;
-			ViewBag.SelectedCurrency = currency;
+			ViewBag.SelectedCategoryIds = categoryIds;
+			ViewBag.SelectedCurrencies = currencies;
 
 			int userId = GetUserIdFromCookies();
 
-			var savingsQuery = _Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId);
+			var spendsQuery = _Spend.GetSpends.OrderByDescending(s => s.SpendId).Where(s => s.UserId == userId);
 
-			if (categoryId.HasValue)
-				savingsQuery = savingsQuery.Where(s => s.CategoryId == categoryId.Value);
-
-			if (!string.IsNullOrEmpty(currency))
-				savingsQuery = savingsQuery.Where(s => s.Currency == currency);
-
-
-			return View(savingsQuery.ToList());
-		}
-
-		public IActionResult FilterSpends(int? categoryId, string currency)
-		{
-			if (GetUserIdFromCookies() == 0)
+			if (!string.IsNullOrWhiteSpace(description))
 			{
-				return RedirectToAction("Login");
+				spendsQuery = spendsQuery.Where(s => s.Description != null && s.Description.Contains(description));
 			}
 
+			if (categoryIds != null && categoryIds.Any()) 
+				spendsQuery = spendsQuery.Where(s => categoryIds.Contains(s.CategoryId));
+
+			if (currencies != null && currencies.Any())
+				spendsQuery = spendsQuery.Where(s => currencies.Contains(s.Currency));
+
+
+			return View(spendsQuery.ToList());
+		}
+
+		public IActionResult FilterSpends(List<int> categoryIds, List<string> currencies, string description)
+		{
+			if (GetUserIdFromCookies() == 0)
+				return RedirectToAction("Login");
+
+			return RedirectToAction("Spends", new { categoryIds = categoryIds, currencies = currencies, description = description });
+		}
+
+		public IActionResult FilterSpendsTest()
+		{
 			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Spends");
 			ViewBag.CategoriesList = categories.ToList();
-
-			int userId = GetUserIdFromCookies();
-
-			return RedirectToAction("Spends", new { categoryId = categoryId, currency = currency });
+			return View();
 		}
 
 		public IActionResult Savings(int? categoryId, string currency)
