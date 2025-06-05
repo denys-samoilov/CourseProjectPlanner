@@ -4,10 +4,28 @@
 	ViewData["Title"] = "Статистика";
 	List<Category> categoriesList = ViewBag.CategoriesList;
 	List<Spend> spendsList = ViewBag.SpendsList;
+	string selectedCurrency = ViewBag.Currency;
+
+	var currencySymbols = new Dictionary<string, string> {
+		{ "UAH", "₴" },
+		{ "USD", "$" },
+		{ "EUR", "€" },
+		{ "GBP", "£" },
+		{ "PLN", "zł" },
+		{ "CZK", "Kč"}
+	};
 }
 <div class="text-center">
-	<h2>Статистика за @ViewBag.Months</h2>
+	<h2>Статистика за @ViewBag.Months</h2><br>
+	<select id="currency">
+		@foreach (var currencySymbol in currencySymbols.Keys)
+		{
+			<option value="@currencySymbol">@currencySymbol</option>
+		}
+	</select>
 </div>
+
+
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
@@ -25,7 +43,7 @@
 				categorySavingSum += saving.Price;
 			}
 		}
-		
+
 		if (categorySavingSum > 0)
 		{
 			savingCategoriesNamesList.Add(category.Name);
@@ -52,7 +70,7 @@
 			generalSavingSum += savingPricesList[i];
 		}
 
-		foreach(var spend in spendsList)
+		foreach (var spend in spendsList)
 		{
 			generalSpendSum += spend.Price;
 		}
@@ -73,6 +91,20 @@
 </div>
 
 <script>
+	function submitFilters() {
+		let currency = document.getElementById("currency").value;
+
+		let params = new URLSearchParams();
+
+		if (currency) {
+			params.append('currency', currency);
+		}
+
+		window.location.href = `/Home/StatisticsSpends?${params.toString()}`;
+	}
+
+
+
 	let dataNames = @Html.Raw(Json.Serialize(savingCategoriesNamesList));
 	let dataPrices = @Html.Raw(Json.Serialize(savingPricesList));
 
@@ -93,4 +125,7 @@
 
 	};
 	Plotly.newPlot('barStatistics', data);
+
+
+
 </script>

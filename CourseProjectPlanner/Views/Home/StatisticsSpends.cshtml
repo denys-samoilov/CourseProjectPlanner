@@ -4,9 +4,24 @@
 	ViewData["Title"] = "Статистика";
 	List<Category> categoriesList = ViewBag.CategoriesList;
 	List<Saving> savingsList = ViewBag.SavingsList;
+
+	var currencySymbols = new Dictionary<string, string> {
+		{ "UAH", "₴" },
+		{ "USD", "$" },
+		{ "EUR", "€" },
+		{ "GBP", "£" },
+		{ "PLN", "zł" },
+		{ "CZK", "Kč"}
+	};
 }
 <div class="text-center">
-	<h2>Статистика за @ViewBag.Months</h2>
+	<h2>Статистика за @ViewBag.Months</h2><br>
+	<select id="currency" class="form-control" onchange="submitFilters()">
+		@foreach (var currencySymbol in currencySymbols.Keys)
+		{
+			<option value="@currencySymbol">@currencySymbol</option>
+		}
+	</select>
 </div>
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -51,7 +66,7 @@
 			generalSpendSum += spendPricesList[i];
 		}
 
-		foreach(var saving in savingsList)
+		foreach (var saving in savingsList)
 		{
 			generalSavingSum += saving.Price;
 		}
@@ -69,6 +84,36 @@
 </div>
 
 <script>
+	let currencySelect = document.getElementById("currency");
+	let selectedCurrency = @Html.Raw(Json.Serialize(ViewBag.SelectedCurrency));
+
+	for (let i = 0; i < currencySelect.options.length; i++) {
+		if (currencySelect.options[i].value === selectedCurrency) {
+			currencySelect.selectedIndex = i;
+			break;
+		}
+	}
+
+
+	function submitFilters() {
+		let currency = document.getElementById("currency").value;
+		let months = @Html.Raw(Json.Serialize(ViewBag.Months));
+
+		months = months.replace(/\D/g, "");
+
+		let params = new URLSearchParams();
+
+		if (currency) {
+			params.append('currency', currency);
+		}
+
+		params.append('months', months)
+
+		window.location.href = `/Home/StatisticsSpends?${params.toString()}`;
+	}
+
+
+
 	let dataNames = @Html.Raw(Json.Serialize(categoriesNamesList));
 	let dataPrices = @Html.Raw(Json.Serialize(spendPricesList));
 

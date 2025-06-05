@@ -28,24 +28,8 @@
 
 <div class="d-flex justify-content-center mb-4" style="gap: 20px;">
 	<a type="button" style="width: 40%;" class="green-button" asp-controller="Home" asp-action="AddSaving">Додати новий запис</a>
-<form asp-controller="Home" asp-action="FilterSavings" method="get" class="d-flex" style="gap: 10px;">
-    <select id="categoryId" name="categoryId" class="form-control" style="border-radius: 10px;">
-        <option value="">Усі категорії</option>
-        @foreach (var category in categoriesList)
-        {
-            <option value="@category.CategoryId">@category.Name</option>
-        }
-    </select>
-
-    <select id="currency" name="currency" class="form-control" style="border-radius: 10px;">
-        <option value="">Усі валюти</option>
-        @foreach (var currency in currencySymbols.Keys)
-        {
-            <option value="@currency">@currency</option>
-        }
-    </select>
-
-    <button type="submit" class="blue-button">Фільтрувати</button>
+<form asp-controller="Home" class="d-flex" style="gap: 10px;">
+    <button class="blue-button" asp-action="FilterSavingsTest">Фільтрувати</button>
 </form>
 
 </div>
