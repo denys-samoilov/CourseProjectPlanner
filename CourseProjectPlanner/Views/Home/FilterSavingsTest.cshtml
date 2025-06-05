@@ -1,0 +1,110 @@
+﻿@{
+	ViewData["Title"] = "FilterSpendsTest";
+	List<Category> categoriesList = ViewBag.CategoriesList;
+
+}
+
+<link rel="stylesheet" href="~/css/modal.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/item.css" asp-append-version="true" />
+
+@{
+	var currencySymbols = new Dictionary<string, string> {
+		{ "UAH", "₴" },
+		{ "USD", "$" },
+		{ "EUR", "€" },
+		{ "GBP", "£" },
+		{ "PLN", "zł" },
+		{ "CZK", "Kč"}
+	};
+}
+
+<div id="myModal" class="modal">
+	<div class="modal-content center-element">
+		<div>
+			<span class="close" id="closeButton">&times;</span>
+			<h5 class="text-center">Фільтрація витрат</h5>
+		</div>
+
+		<p>
+			Категорії:
+			<button id="showHideCategories"><img src="https://cdn-icons-png.flaticon.com/512/60/60995.png" style="width:12px;height:12px;"></button><br>
+			<div id="categorySwitches" style="display:none;">
+				@foreach (var category in categoriesList)
+				{
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" id="category_@category.CategoryId" value="@category.CategoryId" />
+						<label class="form-check-label" for="category_@category.CategoryId">@category.Name</label>
+					</div>
+				}
+			</div>
+		</p>
+		<p>
+			Валюти:
+			<button id="showHideCurrencies"><img src="https://cdn-icons-png.flaticon.com/512/60/60995.png" style="width:12px;height:12px;"></button><br>
+			<div id="currencySwitches" style="display:none;">
+				@foreach (var currency in currencySymbols.Keys)
+				{
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" id="currency_@currency" value="@currency" />
+						<label class="form-check-label" for="currency_@currency">@currency</label>
+					</div>
+				}
+			</div>
+		</p>
+		<p>
+			Пошук за описом:
+			<input type="text" class="form-control" id="descriptionSearch" value="@ViewBag.Description" />
+		</p>
+
+		<button class="green-button" onclick="submitFilters()">Фільтрувати</button>
+	</div>
+</div>
+
+
+
+<script>
+	let modal = document.getElementById("myModal");
+	let close = document.getElementById("closeButton");
+	let showHideCategories = document.getElementById("showHideCategories");
+
+	modal.style.display = "block";
+
+	close.onclick = function () {
+		window.location = "Index";
+	};
+
+	showHideCategories.onclick = function () {
+		let categoryDiv = document.getElementById("categorySwitches");
+		if (categoryDiv.style.display === "none") {
+			categoryDiv.style.display = "block";
+		} else {
+			categoryDiv.style.display = "none";
+		}
+	};
+
+	showHideCurrencies.onclick = function () {
+		let currencyDiv = document.getElementById("currencySwitches");
+		if (currencyDiv.style.display === "none") {
+			currencyDiv.style.display = "block";
+		} else {
+			currencyDiv.style.display = "none";
+		}
+	};
+
+	function submitFilters() {
+		let selectedCategories = Array.from(document.querySelectorAll('#categorySwitches input:checked')).map(cb => cb.value);
+		let selectedCurrencies = Array.from(document.querySelectorAll('#currencySwitches input:checked')).map(cb => cb.value);
+		let description = document.getElementById("descriptionSearch").value;
+
+		let params = new URLSearchParams();
+
+		selectedCategories.forEach(id => params.append('categoryIds', id));
+		selectedCurrencies.forEach(curr => params.append('currencies', curr));
+		if (description.trim() !== "") {
+			params.append('description', description);
+		}
+
+		window.location.href = `/Home/Savings?${params.toString()}`;
+	}
+	
+</script>

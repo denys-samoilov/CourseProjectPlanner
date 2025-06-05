@@ -105,7 +105,7 @@ namespace CourseProjectPlanner.Controllers
 			return View();
 		}
 
-		public IActionResult Savings(int? categoryId, string currency)
+		public IActionResult Savings(List<int> categoryIds, List<string> currencies, string description)
 		{
 			if (GetUserIdFromCookies() == 0)
 			{
@@ -114,19 +114,23 @@ namespace CourseProjectPlanner.Controllers
 
 			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
 			ViewBag.CategoriesList = categories.ToList();
-
-			ViewBag.SelectedCategoryId = categoryId;
-			ViewBag.SelectedCurrency = currency;
+			ViewBag.SelectedCategoryIds = categoryIds;
+			ViewBag.SelectedCurrencies = currencies;
 
 			int userId = GetUserIdFromCookies();
 
 			var savingsQuery = _Saving.GetSavings.OrderByDescending(s => s.SavingId).Where(s => s.UserId == userId);
 
-			if (categoryId.HasValue)
-				savingsQuery = savingsQuery.Where(s => s.CategoryId == categoryId.Value);
+			if (!string.IsNullOrWhiteSpace(description))
+			{
+				savingsQuery = savingsQuery.Where(s => s.Description != null && s.Description.Contains(description));
+			}
 
-			if (!string.IsNullOrEmpty(currency))
-				savingsQuery = savingsQuery.Where(s => s.Currency == currency);
+			if (categoryIds != null && categoryIds.Any())
+				savingsQuery = savingsQuery.Where(s => categoryIds.Contains(s.CategoryId));
+
+			if (currencies != null && currencies.Any())
+				savingsQuery = savingsQuery.Where(s => currencies.Contains(s.Currency));
 
 
 			return View(savingsQuery.ToList());
@@ -145,6 +149,13 @@ namespace CourseProjectPlanner.Controllers
 			int userId = GetUserIdFromCookies();
 
 			return RedirectToAction("Savings", new { categoryId = categoryId, currency = currency });
+		}
+
+		public IActionResult FilterSavingsTest()
+		{
+			var categories = _Category.GetCategories.Where(s => s.RefersTo == "Savings");
+			ViewBag.CategoriesList = categories.ToList();
+			return View();
 		}
 
 
